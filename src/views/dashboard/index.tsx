@@ -11,10 +11,17 @@ import LogsTab from './tabs/logs-tab';
 import NotificationsTab from './tabs/notifications-tab';
 import useRouteStateValue from '../../hooks/use-route-state-value';
 import TextButton from '../../components/dashboard/text-button';
+import useOverviewReport from '../../hooks/reports/use-overview-report';
+import { useEffect } from 'react';
 
 export default function DashboardHomeView() {
 	const isMobile = useBreakpointValue({ base: true, lg: false });
 	const { value: tab, setValue: setTab } = useRouteStateValue('tab', 0);
+
+	const overview = useOverviewReport();
+	useEffect(() => {
+		console.log('overview-report', overview);
+	}, [overview]);
 
 	const disconnect = () => {
 		if (confirm('Disconnect from personal node?')) {

@@ -31,7 +31,7 @@ export function PersonalNodeAuthPage() {
 			if (!personalNode.connected) await personalNode.connect();
 			await personalNode.authenticate(auth);
 
-			navigate(location.state.back || '/', { replace: true });
+			navigate(location.state?.back || '/', { replace: true });
 		} catch (error) {
 			if (error instanceof Error) alert(error.message);
 		}

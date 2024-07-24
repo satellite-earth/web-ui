@@ -26,6 +26,7 @@ import communitiesService from '../../../services/communities';
 import CommunityButton from './community-button';
 import Database01 from '../../icons/components/database-01';
 import { DirectMessagesIcon } from '../../icons';
+import useOverviewReport from '../../../hooks/reports/use-overview-report';
 
 function UserAccount() {
 	const account = useCurrentAccount()!;
