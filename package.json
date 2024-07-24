@@ -21,9 +21,15 @@
 		"preview": "vite preview",
 		"build-icons": "node ./scripts/build-icons.mjs",
 		"generate-pwa-icons": "npx @vite-pwa/assets-generator --preset minimal-2023 public/logo.svg",
+		"build-native-icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#171819' --iconBackgroundColorDark '#171819' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#171819'",
 		"format": "prettier -w ."
 	},
 	"dependencies": {
+		"@capacitor-community/http": "^1.4.1",
+		"@capacitor-mlkit/barcode-scanning": "^6.1.0",
+		"@capacitor/android": "^6.1.1",
+		"@capacitor/app": "^6.0.0",
+		"@capacitor/core": "^6.1.1",
 		"@chakra-ui/icons": "^2.1.1",
 		"@chakra-ui/react": "^2.8.2",
 		"@emotion/react": "^11.11.4",
@@ -58,6 +64,8 @@
 		"zen-observable": "^0.10.0"
 	},
 	"devDependencies": {
+		"@capacitor/assets": "^3.0.5",
+		"@capacitor/cli": "^6.1.1",
 		"@types/chroma-js": "^2.4.4",
 		"@types/debug": "^4.1.12",
 		"@types/lodash.throttle": "^4.1.9",

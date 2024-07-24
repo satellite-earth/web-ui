@@ -7,6 +7,7 @@ import ChevronDown from './components/chevron-down';
 import ChevronUp from './components/chevron-up';
 import ChevronLeft from './components/chevron-left';
 import ChevronRight from './components/chevron-right';
+import QrCode02 from './components/qr-code-02';
 
 export const VerifiedIcon = CheckVerified01;
 export const VerificationFailed = AlertOctagon;
@@ -28,3 +29,5 @@ export const ChevronDownIcon = ChevronDown;
 export const ChevronUpIcon = ChevronUp;
 export const ChevronLeftIcon = ChevronLeft;
 export const ChevronRightIcon = ChevronRight;
+
+export const QrCodeIcon = QrCode02;
