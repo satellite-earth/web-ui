@@ -2,7 +2,6 @@ import { ControlMessage, ControlResponse } from '@satellite-earth/core/types/con
 import { PrivateNodeConfig } from '@satellite-earth/core/types/private-node-config.js';
 import { DatabaseStats } from '@satellite-earth/core/types/control-api/database.js';
 import { ReceiverStatus } from '@satellite-earth/core/types/control-api/receiver.js';
-import { DMStats } from '@satellite-earth/core/types/control-api/direct-messages.js';
 import EventEmitter from 'eventemitter3';
 
 import Subject, { PersistentSubject } from './subject';
@@ -22,7 +21,6 @@ export default class PersonalNodeControlApi extends EventEmitter<EventMap> {
 	config = new Subject<PrivateNodeConfig>();
 	databaseStats = new Subject<DatabaseStats>();
 	receiverStatus = new Subject<ReceiverStatus>();
-	directMessageStats = new Subject<DMStats>();
 	vapidKey = new Subject<string>();
 
 	constructor(node: PersonalNode) {
@@ -57,10 +55,6 @@ export default class PersonalNodeControlApi extends EventEmitter<EventMap> {
 
 			case 'RECEIVER':
 				if (response[2] === 'STATUS') this.receiverStatus.next(response[3]);
-				break;
-
-			case 'DM':
-				if (response[2] === 'STATS') this.directMessageStats.next(response[3]);
 				break;
 
 			case 'NOTIFICATIONS':

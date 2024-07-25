@@ -8,14 +8,17 @@ import Report from '../classes/report';
 import OverviewReport from '../classes/reports/overview';
 import SuperMap from '../classes/super-map';
 import { logger } from '../helpers/debug';
+import ConversationsReport from '../classes/reports/conversations';
 
 // register report handler classes here
+export type ReportTypes = {
+	OVERVIEW: OverviewReport;
+	CONVERSATIONS: ConversationsReport;
+};
 const ReportTypes = {
 	OVERVIEW: OverviewReport,
+	CONVERSATIONS: ConversationsReport,
 } as const;
-type ReportTypes = {
-	OVERVIEW: OverviewReport;
-};
 
 class ReportManager {
 	log = logger.extend('ReportManager');
@@ -53,11 +56,12 @@ class ReportManager {
 		if (!report) report = this.createReport(type, id, args);
 		return report;
 	}
-	createReport<T extends keyof ReportArguments>(type: T, id: string, args: ReportArguments[T]) {
+	createReport<T extends keyof ReportArguments>(type: T, id: string, args: ReportArguments[T]): ReportTypes[T] {
 		const ReportClass = ReportTypes[type];
+		// @ts-expect-error
 		const report = new ReportClass(id, args, this.control);
 		this.reports.set(id, report);
-		return report;
+		return report as ReportTypes[T];
 	}
 	getReport<T extends keyof ReportArguments>(type: T, id: string) {
 		return this.reports.get(id) as ReportTypes[T] | undefined;
