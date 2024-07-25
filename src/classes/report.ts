@@ -1,6 +1,7 @@
 import { ReportArguments, ReportResults } from '@satellite-earth/core/types/control-api/reports.js';
-import PersonalNodeControlApi from './control-api';
 import { nanoid } from 'nanoid';
+
+import PersonalNodeControlApi from './control-api';
 
 export default class Report<T extends keyof ReportArguments> {
 	id: string;
@@ -18,7 +19,7 @@ export default class Report<T extends keyof ReportArguments> {
 
 	// override
 	// @ts-expect-error
-	type: T = 'unset';
+	readonly type: T = 'unset';
 	handleResult(response: ReportResults[T]) {}
 	handleError(message: string) {
 		this.error = message;
@@ -26,6 +27,7 @@ export default class Report<T extends keyof ReportArguments> {
 
 	// public api
 	fire() {
+		// @ts-expect-error
 		this.control.send(['CONTROL', 'REPORT', 'SUBSCRIBE', this.id, this.type, this.args]);
 		this.running = true;
 	}

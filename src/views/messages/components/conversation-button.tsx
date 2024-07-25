@@ -9,7 +9,6 @@ import UserAvatar from '../../../components/user/user-avatar';
 import UserDnsIdentity from '../../../components/user/user-dns-identity';
 import HoverLinkOverlay from '../../../components/hover-link-overlay';
 import { useDraft } from '../../../hooks/use-cache-form';
-import Pencil01 from '../../../components/icons/components/pencil-01';
 
 export default function ConversationButton({
 	pubkey,
