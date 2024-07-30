@@ -5,12 +5,12 @@ import { RouterProvider, ScrollRestoration, createBrowserRouter } from 'react-ro
 
 import './styles.css';
 
+import { theme } from './theme';
+import { GlobalProviders } from './providers/global';
+
 import LoginView from './views/login';
 import LoginStartView from './views/login/start';
 import AppLayout from './components/layout';
-import LoginNsecView from './views/login/nsec';
-import { theme } from './theme';
-import { GlobalProviders } from './providers/global';
 import ConnectView from './views/connect';
 import DashboardHomeView from './views/dashboard';
 import PersonalNodeAuthView from './views/connect/auth';
@@ -22,6 +22,7 @@ import RequirePersonalNodeAuth from './components/router/require-personal-node-a
 import HomeView from './views/home';
 import PersonalNodeSetupView from './views/setup';
 import ConnectionStatus from './components/layout/connection-status';
+import NostrConnectView from './views/login/nostr-connect';
 
 const router = createBrowserRouter([
 	{
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
 		element: <LoginView />,
 		children: [
 			{ path: '', element: <LoginStartView /> },
-			{ path: 'nsec', element: <LoginNsecView /> },
+			{ path: 'nostr-connect', element: <NostrConnectView /> },
 		],
 	},
 	{
