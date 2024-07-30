@@ -4,9 +4,11 @@ import NostrConnectAccount from '../classes/accounts/nostr-connect-account';
 import NsecAccount from '../classes/accounts/nsec-account';
 import PasswordAccount from '../classes/accounts/password-account';
 import { PersistentSubject } from '../classes/subject';
+import { logger } from '../helpers/debug';
 import db from './db';
 
 class AccountService {
+	log = logger.extend('AccountService');
 	loading = new PersistentSubject(true);
 	accounts = new PersistentSubject<Account[]>([]);
 	current = new PersistentSubject<Account | null>(null);
@@ -19,7 +21,9 @@ class AccountService {
 				try {
 					const account = this.createAccountFromDatabaseRecord(data);
 					if (account) accounts.push(account);
-				} catch (error) {}
+				} catch (error) {
+					this.log(`Failed to read account ${data.pubkey}`, data, error);
+				}
 			}
 
 			this.accounts.next(accounts);
