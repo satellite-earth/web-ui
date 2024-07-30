@@ -122,7 +122,12 @@ function LoginForm() {
 			<FormControl>
 				<FormLabel>Private key or Nostr Connect URI</FormLabel>
 				<Flex gap="2">
-					<Input placeholder="nsec, ncryptsec or bunker url" {...register('value', { required: true })} isRequired />
+					<Input
+						placeholder="nsec, ncryptsec or bunker url"
+						{...register('value', { required: true })}
+						isRequired
+						autoComplete="off"
+					/>
 					{formState.isDirty && (
 						<Button type="submit" isLoading={formState.isLoading}>
 							Login

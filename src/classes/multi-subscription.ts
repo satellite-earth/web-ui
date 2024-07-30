@@ -105,13 +105,13 @@ export default class MultiSubscription {
 
 		return this;
 	}
-  waitForAllConnection(): Promise<void> {
-    return Promise.allSettled(
-      Array.from(this.relays)
-        .filter((r) => !r.connected)
-        .map((r) => r.connect()),
-    ).then((v) => void 0);
-  }
+	waitForAllConnection(): Promise<void> {
+		return Promise.allSettled(
+			Array.from(this.relays)
+				.filter((r) => !r.connected)
+				.map((r) => r.connect()),
+		).then((v) => void 0);
+	}
 	close() {
 		if (this.state !== MultiSubscription.OPEN) return this;
 
