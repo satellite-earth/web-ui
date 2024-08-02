@@ -22,7 +22,7 @@
 		"preview": "vite preview",
 		"build-icons": "node ./scripts/build-icons.mjs",
 		"build-native-icons": "npx @capacitor/assets generate --android --ios --iconBackgroundColor '#171819' --iconBackgroundColorDark '#171819' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#171819'",
-		"cap-sync-version": "npx capacitor-set-version . -v $(jq .version package.json) -b 1",
+		"cap-sync-version": "npx capacitor-set-version . -v $(jq -r .version package.json) -b 1",
 		"format": "prettier -w ."
 	},
 	"dependencies": {
