@@ -20,7 +20,6 @@
 		"analyze": "npx vite-bundle-visualizer -o ./stats.html",
 		"preview": "vite preview",
 		"build-icons": "node ./scripts/build-icons.mjs",
-		"generate-pwa-icons": "npx @vite-pwa/assets-generator --preset minimal-2023 public/logo.svg",
 		"build-native-icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#171819' --iconBackgroundColorDark '#171819' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#171819'",
 		"format": "prettier -w ."
 	},
