@@ -4,6 +4,7 @@ import { Box, BoxProps, Text } from '@chakra-ui/react';
 import { controlApi } from '../../services/personal-node';
 import useSubject from '../../hooks/use-subject';
 
+/** @deprecated */
 export default function StatusLog({ ...props }: Omit<BoxProps, 'children'>) {
 	const logs = useSubject(controlApi?.logs) ?? [];
 	const scrollBox = useRef<HTMLDivElement | null>(null);
