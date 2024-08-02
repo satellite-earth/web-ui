@@ -85,32 +85,29 @@ jobs:
         id: upload-release-asset-fdroid-universal-apk
         uses: actions/upload-artifact@v3
         with:
-          path: android/app/build/outputs/apk/fdroid/release/app-fdroid-universal-release-unsigned-signed.apk
+          # modified to remove the -signed.apk
+          path: android/app/build/outputs/apk/fdroid/release/app-fdroid-universal-release-unsigned.apk
           name: satellite-earth-fdroid-universal-dev.apk
 
       - name: Upload F-Droid APK x86 Asset
         id: upload-release-asset-fdroid-x86-apk
         uses: actions/upload-artifact@v3
         with:
-          path: android/app/build/outputs/apk/fdroid/release/app-fdroid-x86-release-unsigned-signed.apk
+          # modified to remove the -signed.apk
+          path: android/app/build/outputs/apk/fdroid/release/app-fdroid-x86-release-unsigned.apk
           name: satellite-earth-fdroid-x86-dev.apk
 
       - name: Upload F-Droid APK x86_64 Asset
         id: upload-release-asset-fdroid-x86-64-apk
         uses: actions/upload-artifact@v3
         with:
-          path: android/app/build/outputs/apk/fdroid/release/app-fdroid-x86_64-release-unsigned-signed.apk
+          # modified to remove the -signed.apk
+          path: android/app/build/outputs/apk/fdroid/release/app-fdroid-x86_64-release-unsigned.apk
           name: satellite-earth-fdroid-x86_64-dev.apk
 
-      - name: Upload Unsigned AAB Asset
+      # F-Droid AAB
+      - name: Upload F-Droid AAB Asset
         uses: actions/upload-artifact@v3
         with:
-          path: android/app/build/outputs/bundle/release/app-release.aab
+          path: android/app/build/outputs/bundle/fdroidRelease/app-fdroid-release.aab
           name: satellite-earth-fdroid-dev.aab
-
-      # F-Droid AAB
-      # - name: Upload F-Droid AAB Asset
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     path: android/app/build/outputs/bundle/fdroidRelease/app-fdroid-release.aab
-      #     name: satellite-earth-fdroid-dev.aab
