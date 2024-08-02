@@ -28,6 +28,25 @@ android {
     dataBinding {
         enabled = true
     }
+    flavorDimensions "channel"
+    productFlavors {
+        play {
+            dimension "channel"
+        }
+
+        fdroid {
+            getIsDefault().set(true)
+            dimension "channel"
+        }
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "x86", "x86_64"
+            universalApk true
+        }
+    }
 }
 
 repositories {
