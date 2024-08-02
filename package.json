@@ -20,7 +20,7 @@
 		"analyze": "npx vite-bundle-visualizer -o ./stats.html",
 		"preview": "vite preview",
 		"build-icons": "node ./scripts/build-icons.mjs",
-		"build-native-icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#171819' --iconBackgroundColorDark '#171819' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#171819'",
+		"build-native-icons": "npx @capacitor/assets generate --android --ios --iconBackgroundColor '#171819' --iconBackgroundColorDark '#171819' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#171819'",
 		"format": "prettier -w ."
 	},
 	"dependencies": {
@@ -29,6 +29,7 @@
 		"@capacitor/android": "^6.1.1",
 		"@capacitor/app": "^6.0.0",
 		"@capacitor/core": "^6.1.1",
+		"@capacitor/ios": "^6.1.1",
 		"@chakra-ui/icons": "^2.1.1",
 		"@chakra-ui/react": "^2.8.2",
 		"@emotion/react": "^11.13.0",
