@@ -11,6 +11,7 @@
 		"type": "git",
 		"url": "git+https://github.com/satellite-earth/web-ui.git"
 	},
+	"packageManager": "pnpm@9.6.0",
 	"scripts": {
 		"prepack": "pnpm build",
 		"dev": "vite",
