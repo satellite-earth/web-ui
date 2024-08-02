@@ -1,12 +1,82 @@
-import { Flex } from '@chakra-ui/react';
+import { useEffect, useRef, useState } from 'react';
+import { Box, Flex, Select, Spacer, Switch, useDisclosure } from '@chakra-ui/react';
+import Convert from 'ansi-to-html';
 
-import StatusLog from '../status-log';
+import useLogsReport from '../../../hooks/reports/use-logs-report';
+import useServicesReport from '../../../hooks/reports/use-services-report';
+import Timestamp from '../../../components/timestamp';
+
+const convert = new Convert();
 
 export default function LogsTab() {
+	const [service, setService] = useState<string | undefined>(undefined);
+	const logs = useLogsReport(service);
+	const raw = useDisclosure();
+
+	const scrollBox = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		const el = scrollBox.current;
+		if (!el) return;
+
+		const rect = el.getBoundingClientRect();
+
+		const closeToBottom = el.scrollTop > el.scrollHeight - rect.height - 128;
+		if (closeToBottom || el.scrollTop === 0) {
+			el.scrollTo({ top: el.scrollHeight });
+		}
+	}, [logs]);
+
+	useEffect(() => {
+		scrollBox.current?.scrollTo({ top: scrollBox.current.scrollHeight });
+	}, [logs?.length]);
+
+	const services = useServicesReport();
+
 	return (
 		<>
-			<Flex gap="2"></Flex>
-			<StatusLog h="full" px="4" pb="10" pt="4" />
+			<Flex gap="2" p="2" alignItems="center">
+				<Select
+					placeholder="All Services"
+					maxW="xs"
+					value={service || ''}
+					onChange={(e) => setService(e.target.value || undefined)}
+				>
+					<optgroup label="Services">
+						{services?.map((service) => (
+							<option key={service.id} value={service.id}>
+								{service.id}
+							</option>
+						))}
+					</optgroup>
+				</Select>
+				<Spacer />
+				<Switch checked={raw.isOpen} onChange={raw.onToggle}>
+					Show Raw
+				</Switch>
+			</Flex>
+			<Box overflow="auto" fontFamily="monospace" px="4" pt="2" pb="10" whiteSpace="nowrap" ref={scrollBox}>
+				{logs &&
+					Array.from(logs)
+						.reverse()
+						.map((entry) => (
+							<p key={entry.timestamp + entry.message}>
+								<Timestamp
+									timestamp={entry.timestamp}
+									color="blue.500"
+									minW="2em"
+									display="inline-block"
+									userSelect="none"
+									mr="2"
+								/>
+								{raw.isOpen ? (
+									entry.message
+								) : (
+									<span dangerouslySetInnerHTML={{ __html: convert.toHtml(entry.message) }} />
+								)}
+							</p>
+						))}
+			</Box>
 		</>
 	);
 }

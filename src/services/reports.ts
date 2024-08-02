@@ -9,15 +9,21 @@ import OverviewReport from '../classes/reports/overview';
 import SuperMap from '../classes/super-map';
 import { logger } from '../helpers/debug';
 import ConversationsReport from '../classes/reports/conversations';
+import LogsReport from '../classes/reports/logs';
+import ServicesReport from '../classes/reports/services';
 
 // register report handler classes here
 export type ReportTypes = {
 	OVERVIEW: OverviewReport;
 	CONVERSATIONS: ConversationsReport;
+	LOGS: LogsReport;
+	SERVICES: ServicesReport;
 };
 const ReportTypes = {
 	OVERVIEW: OverviewReport,
 	CONVERSATIONS: ConversationsReport,
+	LOGS: LogsReport,
+	SERVICES: ServicesReport,
 } as const;
 
 class ReportManager {

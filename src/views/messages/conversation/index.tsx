@@ -23,6 +23,7 @@ import useRouterMarker from '../../../hooks/use-router-marker';
 import UserName from '../../../components/user/user-name';
 import { BackButton } from '../../../components/back-button';
 import { groupMessages } from '../../../helpers/nostr/thread';
+import useUserMetadata from '../../../hooks/use-user-metadata';
 
 /** This is broken out from DirectMessageChatPage for performance reasons. Don't use outside of file */
 const ChatLog = memo(({ timeline }: { timeline: TimelineLoader }) => {
@@ -46,6 +47,9 @@ function DirectMessageConversationPage({ pubkey }: { pubkey: string }) {
 	const account = useCurrentAccount()!;
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	// refresh user metadata
+	useUserMetadata(pubkey, undefined, { alwaysRequest: true });
 
 	const { router } = useContext(UNSAFE_DataRouterContext)!;
 	const marker = useRouterMarker(router);
