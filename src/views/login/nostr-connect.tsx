@@ -33,8 +33,6 @@ export default function NostrConnectView() {
 	}, [signer]);
 
 	const connectURI = useMemo(() => {
-		const signer = new NostrConnectSigner();
-
 		const host = location.protocol + '//' + location.host;
 		const params = new URLSearchParams();
 		params.set('relay', signer.relays[0]);

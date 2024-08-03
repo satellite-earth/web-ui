@@ -11,6 +11,7 @@
 		"type": "git",
 		"url": "git+https://github.com/satellite-earth/web-ui.git"
 	},
+	"packageManager": "pnpm@9.6.0",
 	"scripts": {
 		"prepack": "pnpm build",
 		"dev": "vite",
@@ -20,9 +21,17 @@
 		"analyze": "npx vite-bundle-visualizer -o ./stats.html",
 		"preview": "vite preview",
 		"build-icons": "node ./scripts/build-icons.mjs",
+		"build-native-icons": "npx @capacitor/assets generate --android --ios --iconBackgroundColor '#171819' --iconBackgroundColorDark '#171819' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#171819'",
+		"cap-sync-version": "npx capacitor-set-version . -v $(jq -r .version package.json) -b 1",
 		"format": "prettier -w ."
 	},
 	"dependencies": {
+		"@capacitor-community/http": "^1.4.1",
+		"@capacitor-mlkit/barcode-scanning": "^6.1.0",
+		"@capacitor/android": "^6.1.1",
+		"@capacitor/app": "^6.0.0",
+		"@capacitor/core": "^6.1.1",
+		"@capacitor/ios": "^6.1.1",
 		"@chakra-ui/icons": "^2.1.1",
 		"@chakra-ui/react": "^2.8.2",
 		"@emotion/react": "^11.13.0",
@@ -58,6 +67,8 @@
 		"zen-observable": "^0.10.0"
 	},
 	"devDependencies": {
+		"@capacitor/assets": "^3.0.5",
+		"@capacitor/cli": "^6.1.1",
 		"@types/chroma-js": "^2.4.4",
 		"@types/debug": "^4.1.12",
 		"@types/lodash.throttle": "^4.1.9",
