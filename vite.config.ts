@@ -30,6 +30,9 @@ export default defineConfig({
 				theme_color: '#dbaa31',
 				background_color: '#171819',
 				categories: ['social'],
+				lang: 'en',
+				start_url: '/',
+				scope: '/',
 				icons: [
 					{
 						src: 'logo.svg',
@@ -52,9 +55,6 @@ export default defineConfig({
 						type: 'image/png',
 					},
 				],
-				lang: 'en',
-				start_url: '/',
-				scope: '/',
 			},
 			devOptions: {
 				enabled: true,

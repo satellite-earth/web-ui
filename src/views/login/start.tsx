@@ -26,7 +26,7 @@ function ClientSideNostrConnectButton() {
 	const [connecting, setConnecting] = useState(false);
 	const connect = useCallback(() => {
 		setConnecting(true);
-		const signer = new NostrConnectSigner();
+		const signer = new NostrConnectSigner(undefined, DEFAULT_NOSTR_CONNECT_RELAYS);
 
 		signer.listen().then(() => {
 			nostrConnectService.saveSigner(signer);
