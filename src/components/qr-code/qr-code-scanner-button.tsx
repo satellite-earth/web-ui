@@ -56,14 +56,19 @@ async function scanWithNative() {
 
 	if (!granted) throw new Error('Camera access denied');
 
-	const { barcodes } = await BarcodeScanner.scan({
-		formats: [BarcodeFormat.QrCode],
-	});
+	try {
+		const { barcodes } = await BarcodeScanner.scan({
+			formats: [BarcodeFormat.QrCode],
+		});
 
-	const barcode = barcodes[0];
-	if (!barcode) return null;
-	if (barcode.valueType !== 'TEXT') throw new Error('Incorrect barcode format');
-	return barcode.rawValue;
+		const barcode = barcodes[0];
+		if (!barcode) return null;
+
+		return barcode.rawValue;
+	} catch (error) {
+		// user closed scanner
+		return null;
+	}
 }
 
 export default function QRCodeScannerButton({ onData }: { onData: QrScannerModalProps['onData'] }) {

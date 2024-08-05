@@ -27,6 +27,10 @@ function ConnectForm() {
 		},
 	});
 
+	const handleScanData = (data: string) => {
+		setValue('url', data.replace(/^http:/, 'ws:').replace(/^https:/, 'wss:'));
+	};
+
 	const submit = handleSubmit(async (values) => {
 		const withProto = values.url.startsWith('ws') ? values.url : 'ws://' + values.url;
 		setPrivateNodeURL(new URL(withProto).toString());
@@ -39,7 +43,7 @@ function ConnectForm() {
 				<FormLabel>Satellite Node URL</FormLabel>
 				<Flex gap="2">
 					<Input type="url" {...register('url', { required: true })} isRequired placeholder="ws://127.0.0.1:2012" />
-					<QRCodeScannerButton onData={(url) => setValue('url', url)} />
+					<QRCodeScannerButton onData={handleScanData} />
 				</Flex>
 				<FormHelperText>This is the URL to your personal satellite node</FormHelperText>
 			</FormControl>
