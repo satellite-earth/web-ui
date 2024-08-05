@@ -38,7 +38,7 @@ export default function NostrConnectView() {
 		params.set('relay', signer.relays[0]);
 		params.set('name', 'Satellite');
 		params.set('url', host);
-		params.set('image', 'https://app.satellite.earth/pwa-192x192.png');
+		params.set('image', 'https://app.satellite.earth/logo-192x192.png');
 
 		return `nostrconnect://${signer.publicKey}?` + params.toString();
 	}, []);
