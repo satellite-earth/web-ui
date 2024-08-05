@@ -1,10 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-	Alert,
-	AlertDescription,
-	AlertIcon,
-	AlertTitle,
 	Box,
 	Button,
 	Code,
@@ -14,7 +9,6 @@ import {
 	FormLabel,
 	Heading,
 	Input,
-	Spinner,
 	Text,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
@@ -93,60 +87,6 @@ function ConnectConfirmation() {
 	);
 }
 
-const steps = [3, 3, 5, 5, 10, 20, 30, 60];
-function ReconnectForm() {
-	const [tries, setTries] = useState(0);
-	const [count, setCount] = useState(steps[0]);
-	const [error, setError] = useState<Error>();
-
-	const connect = useCallback(async () => {
-		try {
-			await personalNode?.connect();
-		} catch (error) {
-			if (error instanceof Error) setError(error);
-			setCount(steps[Math.min(tries, steps.length - 1)]);
-			setTries((v) => v + 1);
-		}
-	}, [setError, setCount, setTries, tries]);
-
-	useEffect(() => {
-		const i = setInterval(() => {
-			setCount((v) => {
-				if (v === 0) return 0;
-				if (v === 1) connect();
-				return v - 1;
-			});
-		}, 1000);
-		return () => clearInterval(i);
-	}, [connect, setCount]);
-
-	return (
-		<Flex direction="column" alignItems="center" gap="4">
-			{count > 0 ? (
-				<>
-					<Heading size="md">Reconnecting in {count}s...</Heading>
-				</>
-			) : (
-				<>
-					<Heading size="md">Reconnecting...</Heading>
-					<Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="lg" />
-				</>
-			)}
-			{error && (
-				<Alert status="error">
-					<AlertIcon />
-					<AlertTitle>Failed!</AlertTitle>
-					<AlertDescription>{error.message}</AlertDescription>
-				</Alert>
-			)}
-
-			<Button as={RouterLink} to={'.?config'} variant="link">
-				Cancel
-			</Button>
-		</Flex>
-	);
-}
-
 export default function ConnectView() {
 	const location = useLocation();
 	const connected = useSubject(personalNode?.connectedSub);
@@ -158,9 +98,9 @@ export default function ConnectView() {
 		return <Navigate to={location.state?.back ?? '/'} replace />;
 	}
 
-	if (personalNode && relayParam && new URL(personalNode.url).toString() === new URL(relayParam).toString()) {
-		return <Navigate replace to="/" />;
-	}
+	const isRelayParamEqual =
+		personalNode && relayParam && new URL(personalNode.url).toString() === new URL(relayParam).toString();
+	if (isRelayParamEqual) return <Navigate replace to="/" />;
 
 	return (
 		<Flex w="full" h="full" alignItems="center" justifyContent="center">

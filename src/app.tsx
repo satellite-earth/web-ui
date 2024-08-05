@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import ErrorBoundary from './components/error-boundary';
-import { RouterProvider, ScrollRestoration, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import './styles.css';
 
@@ -55,8 +55,7 @@ const router = createBrowserRouter([
 	{
 		path: 'dashboard',
 		element: (
-			<RequirePersonalNode requireConnection>
-				<ScrollRestoration />
+			<RequirePersonalNode>
 				<AppLayout />
 			</RequirePersonalNode>
 		),
@@ -77,7 +76,6 @@ const router = createBrowserRouter([
 			<RequirePersonalNode>
 				<RequireCurrentAccount>
 					<RequirePersonalNodeAuth>
-						<ScrollRestoration />
 						<AppLayout />
 					</RequirePersonalNodeAuth>
 				</RequireCurrentAccount>

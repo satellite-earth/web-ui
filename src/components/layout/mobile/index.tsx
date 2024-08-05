@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Flex, Heading, IconButton, useDisclosure } from '@chakra-ui/react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { getCommunityName } from '@satellite-earth/core/helpers/nostr';
 
@@ -23,6 +23,7 @@ export default function MobileLayout() {
 		drawer.onClose();
 	}, [community, drawer.onClose]);
 
+	// TODO: move this header to a better place
 	if (location.pathname === '/') {
 		return (
 			<>
@@ -49,5 +50,12 @@ export default function MobileLayout() {
 		);
 	}
 
-	return <Outlet />;
+	return (
+		<>
+			<ScrollRestoration />
+			<ConnectionStatus />
+			<NotificationsPrompt />
+			<Outlet />
+		</>
+	);
 }

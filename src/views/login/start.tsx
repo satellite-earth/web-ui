@@ -144,7 +144,7 @@ export default function LoginStartView() {
 		<>
 			<LoginForm />
 			<Text>OR</Text>
-			<Flex gap="2" wrap="wrap">
+			<Flex gap="2" wrap="wrap" justifyContent="center">
 				{window.nostr && <ExtensionButton />}
 				{isAndroid && <ClientSideNostrConnectButton />}
 				<Button
