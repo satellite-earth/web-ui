@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertIcon, Button, ButtonProps } from '@chakra-ui/react';
 import { NostrEvent } from 'nostr-tools';
-import { getDMRecipient, getDMSender } from '@satellite-earth/core/helpers/nostr';
 
-import useCurrentAccount from '../../../hooks/use-current-account';
 import LockUnlocked01 from '../../../components/icons/components/lock-unlocked-01';
-import { useDecryptionContainer } from '../../../providers/global/decryption-provider';
+import { useKind4Decrypt } from '../../../hooks/use-kind4-decryption';
 
 export default function DecryptPlaceholder({
 	children,
@@ -15,13 +13,8 @@ export default function DecryptPlaceholder({
 	children: (decrypted: string) => JSX.Element;
 	message: NostrEvent;
 } & Omit<ButtonProps, 'children'>): JSX.Element {
-	const account = useCurrentAccount();
-	const isOwn = account?.pubkey === message.pubkey;
 	const [loading, setLoading] = useState(false);
-	const { requestDecrypt, plaintext, error } = useDecryptionContainer(
-		isOwn ? getDMRecipient(message) : getDMSender(message),
-		message.content,
-	);
+	const { requestDecrypt, plaintext, error } = useKind4Decrypt(message);
 
 	const decrypt = async () => {
 		setLoading(true);

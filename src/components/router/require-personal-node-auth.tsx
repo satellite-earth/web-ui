@@ -11,13 +11,14 @@ export default function RequirePersonalNodeAuth({ children }: PropsWithChildren)
 	const isFirstAuthentication = useSubject(personalNode?.isFirstAuthentication);
 	const connected = useSubject(personalNode?.connectedSub);
 	const authenticated = useSubject(personalNode?.authenticated);
+	const challenge = useSubject(personalNode?.onChallenge);
 	const { requestSignature } = useSigningContext();
 	const navigate = useNavigate();
 
 	const loading = useRef(false);
 	useEffect(() => {
 		// wait for the personalNode to be connected
-		if (!personalNode || !connected || authenticated) return;
+		if (!personalNode || !connected || authenticated || !challenge) return;
 
 		if (loading.current) return;
 		loading.current = true;
@@ -28,7 +29,7 @@ export default function RequirePersonalNodeAuth({ children }: PropsWithChildren)
 				navigate('/connect/auth', { state: { back: (location.state?.back ?? location) satisfies To } });
 			})
 			.finally(() => (loading.current = false));
-	}, [connected, authenticated]);
+	}, [connected, authenticated, challenge]);
 
 	if (!authenticated && isFirstAuthentication && connected)
 		return (

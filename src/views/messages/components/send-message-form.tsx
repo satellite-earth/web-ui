@@ -5,10 +5,10 @@ import { EventTemplate, kinds } from 'nostr-tools';
 
 import { Button, Flex, FlexProps, Heading, Textarea } from '@chakra-ui/react';
 import { useSigningContext } from '../../../providers/global/signing-provider';
-import { useDecryptionContext } from '../../../providers/global/decryption-provider';
 import { usePublishEvent } from '../../../providers/global/publish-provider';
-import personalNode from '../../../services/personal-node';
+import personalNode, { controlApi } from '../../../services/personal-node';
 import useCacheForm from '../../../hooks/use-cache-form';
+import decryptionCacheService from '../../../services/decryption-cache';
 
 export default function SendMessageForm({
 	pubkey,
@@ -17,7 +17,6 @@ export default function SendMessageForm({
 }: { pubkey: string; rootId?: string } & Omit<FlexProps, 'children'>) {
 	const publish = usePublishEvent();
 	const { requestEncrypt } = useSigningContext();
-	const { getOrCreateContainer } = useDecryptionContext();
 
 	const [loadingMessage, setLoadingMessage] = useState('');
 	const { getValues, setValue, watch, handleSubmit, formState, reset } = useForm({
@@ -54,12 +53,17 @@ export default function SendMessageForm({
 		setLoadingMessage('Signing...');
 		const pub = await publish(draft, personalNode!);
 
-		if (pub) {
+		if (pub.event) {
 			clearCache();
 			reset();
 
 			// add plaintext to decryption context
-			getOrCreateContainer(pubkey, encrypted).plaintext.next(values.content);
+			decryptionCacheService
+				.getOrCreateContainer(pub.event.id, 'nip04', pubkey, encrypted)
+				.plaintext.next(values.content);
+
+			// send content to control api
+			controlApi?.send(['CONTROL', 'DECRYPTION-CACHE', 'ADD-CONTENT', pub.event.id, values.content]);
 
 			// refocus input
 			setTimeout(() => textAreaRef.current?.focus(), 50);
