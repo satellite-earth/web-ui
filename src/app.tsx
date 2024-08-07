@@ -23,6 +23,7 @@ import HomeView from './views/home';
 import PersonalNodeSetupView from './views/setup';
 import ConnectionStatus from './components/layout/connection-status';
 import NostrConnectView from './views/login/nostr-connect';
+import UserProfileView from './views/profile';
 
 const router = createBrowserRouter([
 	{
@@ -56,17 +57,15 @@ const router = createBrowserRouter([
 		path: 'dashboard',
 		element: (
 			<RequirePersonalNode>
-				<AppLayout />
+				<RequirePersonalNodeAuth>
+					<AppLayout />
+				</RequirePersonalNodeAuth>
 			</RequirePersonalNode>
 		),
 		children: [
 			{
 				path: '',
-				element: (
-					<RequirePersonalNodeAuth>
-						<DashboardHomeView />
-					</RequirePersonalNodeAuth>
-				),
+				element: <DashboardHomeView />,
 			},
 		],
 	},
@@ -84,17 +83,17 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: 'messages',
-				element: (
-					<RequirePersonalNodeAuth>
-						<MessagesView />
-					</RequirePersonalNodeAuth>
-				),
+				element: <MessagesView />,
 				children: [
 					{
 						path: 'p/:pubkey',
 						element: <DirectMessageConversationView />,
 					},
 				],
+			},
+			{
+				path: 'profile/:pointer',
+				element: <UserProfileView />,
 			},
 			{
 				path: '',

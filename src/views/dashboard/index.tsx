@@ -1,10 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+
 import { resetPrivateNodeURL } from '../../services/personal-node';
 import { controlApi } from '../../services/personal-node';
 import useOverviewReport from '../../hooks/reports/use-overview-report';
 import useSubject from '../../hooks/use-subject';
-import DesktopSideNav from '../../components/layout/desktop/side-nav';
 import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 import UserName from '../../components/user/user-name';
 import OverviewItem from '../../components/dashboard/overview-item';
