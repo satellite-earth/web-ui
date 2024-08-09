@@ -19,10 +19,6 @@ export default function DashboardHomeView() {
 
 	const mobile = useBreakpointValue({ base: true, lg: false });
 
-	useEffect(() => {
-		console.log('overview-report', overview);
-	}, [overview]);
-
 	const [filter, setFilter] = useState('');
 
 	const disconnect = () => {

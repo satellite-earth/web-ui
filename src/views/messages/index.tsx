@@ -51,7 +51,10 @@ export default function MessagesView() {
 
 	useSubject(draftService.onDraftsChange);
 
-	const filtered = filter === 'contacts' ? contactsConversations : otherConversations;
+	const filtered =
+		filter === 'contacts' && contactsConversations && contactsConversations.length > 0
+			? contactsConversations
+			: otherConversations;
 
 	const isMobile = useBreakpointValue({ base: true, lg: false });
 	const showMenu = !isMobile || !!match;

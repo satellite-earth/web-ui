@@ -1,5 +1,5 @@
 import { Kind0ParsedContent, parseKind0Event } from '@satellite-earth/core/helpers/nostr';
-import { kinds } from 'nostr-tools';
+import { kinds, NostrEvent } from 'nostr-tools';
 import _throttle from 'lodash.throttle';
 
 import SuperMap from '../classes/super-map';
@@ -18,6 +18,10 @@ class UserMetadataService {
 		const subject = this.metadata.get(pubkey);
 		replaceableEventsService.requestEvent(relays, kinds.Metadata, pubkey, undefined, opts);
 		return subject;
+	}
+	handleEvent(event: NostrEvent) {
+		replaceableEventsService.handleEvent(event);
+		return this.getSubject(event.pubkey);
 	}
 }
 

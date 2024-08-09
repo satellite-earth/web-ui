@@ -89,6 +89,17 @@ export default function DesktopSideNav() {
 				variant="outline"
 				to="/messages"
 			/>
+			<IconButton
+				as={RouterLink}
+				aria-label="Search"
+				title="Search"
+				icon={<SearchIcon boxSize={5} />}
+				w="12"
+				h="12"
+				fontSize="24"
+				variant="outline"
+				to="/search"
+			/>
 			{/* <Divider /> */}
 			{/* {communities.map((community) => (
 				<CommunityButton key={community.pubkey} community={community} />

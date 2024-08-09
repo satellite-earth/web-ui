@@ -25,6 +25,7 @@ import PersonalNodeSetupView from './views/setup';
 import ConnectionStatus from './components/layout/connection-status';
 import NostrConnectView from './views/login/nostr-connect';
 import UserProfileView from './views/profile';
+import SearchView from './views/search';
 
 const router = createBrowserRouter([
 	{
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
 			{
 				path: 'profile/:pointer',
 				element: <UserProfileView />,
+			},
+			{
+				path: 'search',
+				element: <SearchView />,
 			},
 			{
 				path: '',
