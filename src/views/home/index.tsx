@@ -2,7 +2,7 @@ import { Flex, IconButton, Input } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import BottomNav from '../../components/layout/mobile/bottom-nav';
+import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import { ChevronRightIcon } from '../../components/icons';
 
 export default function HomeView() {
@@ -29,7 +29,7 @@ export default function HomeView() {
 					<IconButton type="submit" icon={<ChevronRightIcon boxSize={6} />} aria-label="Search" colorScheme="brand" />
 				</Flex>
 			</Flex>
-			<BottomNav />
+			<MobileBottomNav />
 		</>
 	);
 }

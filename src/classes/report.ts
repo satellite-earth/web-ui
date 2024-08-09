@@ -20,13 +20,15 @@ export default class Report<T extends keyof ReportArguments> {
 	// override
 	// @ts-expect-error
 	readonly type: T = 'unset';
-	handleResult(response: ReportResults[T]) {}
+	onFire(args: ReportArguments[T]) {}
+	handleResult(result: ReportResults[T]) {}
 	handleError(message: string) {
 		this.error = message;
 	}
 
 	// public api
 	fire() {
+		this.onFire(this.args);
 		// @ts-expect-error
 		this.control.send(['CONTROL', 'REPORT', 'SUBSCRIBE', this.id, this.type, this.args]);
 		this.running = true;

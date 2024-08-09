@@ -11,6 +11,7 @@ import { logger } from '../helpers/debug';
 import ConversationsReport from '../classes/reports/conversations';
 import LogsReport from '../classes/reports/logs';
 import ServicesReport from '../classes/reports/services';
+import { DMSearchReport } from '../classes/reports/dm-search';
 
 // register report handler classes here
 export type ReportTypes = {
@@ -18,12 +19,14 @@ export type ReportTypes = {
 	CONVERSATIONS: ConversationsReport;
 	LOGS: LogsReport;
 	SERVICES: ServicesReport;
+	DM_SEARCH: DMSearchReport;
 };
 const ReportTypes = {
 	OVERVIEW: OverviewReport,
 	CONVERSATIONS: ConversationsReport,
 	LOGS: LogsReport,
 	SERVICES: ServicesReport,
+	DM_SEARCH: DMSearchReport,
 } as const;
 
 class ReportManager {

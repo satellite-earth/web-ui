@@ -5,7 +5,7 @@ export default function Timestamp({ timestamp, ...props }: { timestamp: number }
 	const date = dayjs.unix(timestamp);
 	const now = dayjs();
 
-	let display = date.format('L');
+	let display = date.format('ll');
 
 	if (now.diff(date, 's') < 1) {
 		display = 'now';
@@ -22,7 +22,7 @@ export default function Timestamp({ timestamp, ...props }: { timestamp: number }
 	}
 
 	return (
-		<Box as="time" dateTime={date.toISOString()} title={date.format('LLL')} {...props}>
+		<Box as="time" dateTime={date.toISOString()} title={date.format('lll')} whiteSpace="pre" {...props}>
 			{display}
 		</Box>
 	);

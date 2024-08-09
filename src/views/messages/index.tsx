@@ -9,7 +9,7 @@ import { getPubkeysFromList } from '@satellite-earth/core/helpers/nostr/lists.js
 import useSubject from '../../hooks/use-subject';
 import ConversationButton from './components/conversation-button';
 import SimpleHeader from '../../components/simple-header';
-import BottomNav from '../../components/layout/mobile/bottom-nav';
+import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import draftService from '../../services/drafts';
 import useConversationsReport from '../../hooks/reports/use-conversations-report';
 import useUserContactList from '../../hooks/use-user-contact-list';
@@ -97,7 +97,7 @@ export default function MessagesView() {
 					</Flex>
 					<Outlet />
 				</Flex>
-				<BottomNav />
+				<MobileBottomNav />
 			</>
 		);
 	}
