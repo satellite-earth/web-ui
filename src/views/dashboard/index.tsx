@@ -5,15 +5,19 @@ import { resetPrivateNodeURL } from '../../services/personal-node';
 import { controlApi } from '../../services/personal-node';
 import useOverviewReport from '../../hooks/reports/use-overview-report';
 import useSubject from '../../hooks/use-subject';
+import { useBreakpointValue } from '@chakra-ui/react';
+import SimpleHeader from '../../components/simple-header';
+import BottomNav from '../../components/layout/mobile/bottom-nav';
 import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 import UserName from '../../components/user/user-name';
 import OverviewItem from '../../components/dashboard/overview-item';
-import SearchInput from '../../components/dashboard/search-input';
 
 export default function DashboardHomeView() {
 	const overview = useOverviewReport();
 	const status = useSubject(controlApi?.receiverStatus);
 	const config = useSubject(controlApi?.config);
+
+	const mobile = useBreakpointValue({ base: true, lg: false });
 
 	useEffect(() => {
 		console.log('overview-report', overview);
@@ -28,32 +32,36 @@ export default function DashboardHomeView() {
 	};
 
 	return (
-		<Flex flexDirection="column" overflow="scroll" w="full" alignItems="center">
-			<Flex flexDirection="column" marginBottom="48px" marginTop="24px">
-				<div>OWNER: {config?.owner ? <UserName pubkey={config?.owner} /> : <div>NOT SET</div>}</div>
-				<PanelItemToggle
-					label="LISTENER ACTIVE:"
-					value={status?.active ?? false}
-					onChange={() => {
-						if (status?.active) controlApi?.send(['CONTROL', 'RECEIVER', 'STOP']);
-						else controlApi?.send(['CONTROL', 'RECEIVER', 'START']);
-					}}
-				/>
+		<>
+			{mobile ? <SimpleHeader title="Network" /> : null}
+			<Flex flexDirection="column" overflow="scroll" w="full" alignItems="center">
+				<Flex flexDirection="column" marginBottom="48px" marginTop="24px">
+					<div>OWNER: {config?.owner ? <UserName pubkey={config?.owner} /> : <div>NOT SET</div>}</div>
+					<PanelItemToggle
+						label="LISTENER ACTIVE:"
+						value={status?.active ?? false}
+						onChange={() => {
+							if (status?.active) controlApi?.send(['CONTROL', 'RECEIVER', 'STOP']);
+							else controlApi?.send(['CONTROL', 'RECEIVER', 'START']);
+						}}
+					/>
+				</Flex>
+				{/* <Flex flexDirection="column" w="full" p="4">
+					<div style={{ marginBottom: 36 }}>
+						<SearchInput />
+					</div>
+				</Flex> */}
+				<Flex flexDirection="column" w="full">
+					{overview
+						?.filter((item) => {
+							return !filter || item.pubkey.includes(filter);
+						})
+						.map((item) => {
+							return <OverviewItem pubkey={item.pubkey} events={item.events} />;
+						})}
+				</Flex>
+				<BottomNav />
 			</Flex>
-			<Flex minWidth="1000px" flexDirection="column">
-				<div style={{ marginBottom: 36 }}>
-					<SearchInput />
-				</div>
-			</Flex>
-			<Flex minWidth="720px" flexDirection="column">
-				{overview
-					?.filter((item) => {
-						return !filter || item.pubkey.includes(filter);
-					})
-					.map((item) => {
-						return <OverviewItem pubkey={item.pubkey} events={item.events} />;
-					})}
-			</Flex>
-		</Flex>
+		</>
 	);
 }

@@ -25,8 +25,10 @@ import ExploreCommunitiesModal from '../../explore/expore-communities-modal';
 import communitiesService from '../../../services/communities';
 import CommunityButton from './community-button';
 import Database01 from '../../icons/components/database-01';
-import { DirectMessagesIcon } from '../../icons';
+import { DirectMessagesIcon, SearchIcon, SettingsIcon, SatelliteDishIcon } from '../../icons';
+// import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
 import useOverviewReport from '../../../hooks/reports/use-overview-report';
+import Home05 from '../../icons/components/home-05';
 
 function UserAccount() {
 	const account = useCurrentAccount()!;
@@ -67,9 +69,20 @@ export default function DesktopSideNav() {
 			{account && <UserAccount />}
 			<IconButton
 				as={RouterLink}
+				aria-label="Search"
+				title="Search"
+				icon={<Home05 boxSize={5} />}
+				w="12"
+				h="12"
+				fontSize="24"
+				variant="outline"
+				to="/"
+			/>
+			<IconButton
+				as={RouterLink}
 				aria-label="Messages"
 				title="Messages"
-				icon={<DirectMessagesIcon boxSize={7} />}
+				icon={<DirectMessagesIcon boxSize={5} />}
 				w="12"
 				h="12"
 				fontSize="24"
@@ -92,23 +105,25 @@ export default function DesktopSideNav() {
 			<IconButton
 				w="12"
 				h="12"
-				aria-label="Color Mode"
-				title="Color Mode"
-				onClick={toggleColorMode}
-				mt="auto"
-				icon={colorMode === 'light' ? <Moon01 boxSize={6} /> : <Sun boxSize={6} />}
-			/>
-			<IconButton
-				w="12"
-				h="12"
 				as={RouterLink}
-				aria-label="Node Dashboard"
-				title="Node Dashboard"
-				icon={<Database01 boxSize={6} />}
+				aria-label="Network"
+				title="Network"
+				icon={<SatelliteDishIcon boxSize={6} />}
+				variant="outline"
 				to="/dashboard"
 			/>
-
-			{explore.isOpen && <ExploreCommunitiesModal isOpen onClose={explore.onClose} />}
+			<IconButton
+				as={RouterLink}
+				w="12"
+				h="12"
+				aria-label="Settings"
+				title="Settings"
+				mt="auto"
+				variant="outline"
+				icon={<SettingsIcon boxSize={5} />}
+				to="/settings"
+			/>
+			{/* {explore.isOpen && <ExploreCommunitiesModal isOpen onClose={explore.onClose} />} */}
 		</Flex>
 	);
 }

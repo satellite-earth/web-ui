@@ -14,6 +14,7 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import { IconButton } from '@chakra-ui/react';
 
 import useSubject from '../../../hooks/use-subject';
 import communitiesService from '../../../services/communities';
@@ -21,9 +22,9 @@ import { UserAvatar } from '../../user/user-avatar';
 import useCurrentAccount from '../../../hooks/use-current-account';
 import UserName from '../../user/user-name';
 import UserDnsIdentity from '../../user/user-dns-identity';
-import ColorModeButton from '../../color-mode-button';
+// import ColorModeButton from '../../color-mode-button';
 import personalNode from '../../../services/personal-node';
-import { DirectMessagesIcon } from '../../icons';
+import { DirectMessagesIcon, SatelliteDishIcon, SearchIcon, SettingsIcon } from '../../icons';
 
 export default function DrawerNav({ isOpen, onClose, ...props }: Omit<ModalProps, 'children'>) {
 	const account = useCurrentAccount();
@@ -45,7 +46,17 @@ export default function DrawerNav({ isOpen, onClose, ...props }: Omit<ModalProps
 									<UserDnsIdentity pubkey={account.pubkey} />
 								</Text>
 							</Box>
-							<ColorModeButton variant="ghost" />
+							<IconButton
+								as={RouterLink}
+								w="10"
+								h="10"
+								aria-label="Settings"
+								title="Settings"
+								variant="outline"
+								icon={<SettingsIcon boxSize={5} />}
+								to="/settings"
+							/>
+							{/* <ColorModeButton variant="ghost" /> */}
 						</>
 					) : (
 						<Button as={RouterLink} to="/login">
@@ -54,13 +65,25 @@ export default function DrawerNav({ isOpen, onClose, ...props }: Omit<ModalProps
 					)}
 				</DrawerHeader>
 				<DrawerBody p="0" display="flex" flexDirection="column">
-					<Flex as={RouterLink} to="/messages" alignItems="center" p="2" gap="4" tabIndex={0} cursor="pointer">
+					<Flex as={RouterLink} to="/search" alignItems="center" p="2" gap="2" tabIndex={0} cursor="pointer">
 						<Center w="10" h="10">
-							<DirectMessagesIcon boxSize={6} />
+							<SearchIcon boxSize={5} />
+						</Center>
+						<Text fontWeight="bold">Search</Text>
+					</Flex>
+					<Flex as={RouterLink} to="/messages" alignItems="center" p="2" gap="2" tabIndex={0} cursor="pointer">
+						<Center w="10" h="10">
+							<DirectMessagesIcon boxSize={5} />
 						</Center>
 						<Text fontWeight="bold">Messages</Text>
 					</Flex>
-					<Divider />
+					<Flex as={RouterLink} to="/dashboard" alignItems="center" p="2" gap="2" tabIndex={0} cursor="pointer">
+						<Center w="10" h="10">
+							<SatelliteDishIcon boxSize={6} />
+						</Center>
+						<Text fontWeight="bold">My Network</Text>
+					</Flex>
+					{communities.length > 0 ? <Divider /> : null}
 					<Spacer />
 					{/* {communities.map((community) => (
 						<MobileCommunityButton community={community} key={community.id} />
@@ -68,7 +91,7 @@ export default function DrawerNav({ isOpen, onClose, ...props }: Omit<ModalProps
 					<Spacer />
 					{personalNode && (
 						<Button variant="link" p="4" w="full" as={RouterLink} to="/dashboard">
-							Satellite Node
+							Satellite
 						</Button>
 					)}
 				</DrawerBody>

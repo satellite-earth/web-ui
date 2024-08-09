@@ -20,6 +20,7 @@ import RequirePersonalNode from './components/router/require-personal-node';
 import RequireCurrentAccount from './components/router/require-current-account';
 import RequirePersonalNodeAuth from './components/router/require-personal-node-auth';
 import HomeView from './views/home';
+import SettingsView from './views/settings';
 import PersonalNodeSetupView from './views/setup';
 import ConnectionStatus from './components/layout/connection-status';
 import NostrConnectView from './views/login/nostr-connect';
@@ -66,6 +67,22 @@ const router = createBrowserRouter([
 			{
 				path: '',
 				element: <DashboardHomeView />,
+			},
+		],
+	},
+	{
+		path: 'settings',
+		element: (
+			<RequirePersonalNode>
+				<RequirePersonalNodeAuth>
+					<AppLayout />
+				</RequirePersonalNodeAuth>
+			</RequirePersonalNode>
+		),
+		children: [
+			{
+				path: '',
+				element: <SettingsView />,
 			},
 		],
 	},
