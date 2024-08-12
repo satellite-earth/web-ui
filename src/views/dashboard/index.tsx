@@ -12,6 +12,7 @@ import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 import UserName from '../../components/user/user-name';
 import OverviewItem from '../../components/dashboard/overview-item';
 
+/** @deprecated old dashboard */
 export default function DashboardHomeView() {
 	const overview = useOverviewReport();
 	const status = useSubject(controlApi?.receiverStatus);

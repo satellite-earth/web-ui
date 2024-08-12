@@ -80,6 +80,7 @@ function AddPubkeyForm({ onCancel, onAdd }: { onCancel?: () => void; onAdd?: () 
 }
 */
 
+/** @deprecated old dashboard */
 export default function ReceiverPanel() {
 	// const addRelay = useDisclosure();
 	// const addPubkey = useDisclosure();

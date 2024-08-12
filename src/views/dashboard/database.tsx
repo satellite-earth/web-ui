@@ -9,6 +9,7 @@ import { formatDataSize } from '../../helpers/number';
 import TextButton from '../../components/dashboard/text-button';
 import ImportEventsButton from '../../components/dashboard/import-events-button';
 
+/** @deprecated old dashboard */
 export default function DatabasePanel() {
 	const status = useSubject(controlApi?.databaseStats);
 	const importEvent = useCallback(async (event: NostrEvent) => personalNode?.publish(event), []);

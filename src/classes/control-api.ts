@@ -4,10 +4,8 @@ import { DatabaseStats } from '@satellite-earth/core/types/control-api/database.
 import { ReceiverStatus } from '@satellite-earth/core/types/control-api/receiver.js';
 import EventEmitter from 'eventemitter3';
 
-import Subject, { PersistentSubject } from './subject';
+import Subject from './subject';
 import PersonalNode from './personal-node';
-
-const MAX_LOG_LINES = 200;
 
 type EventMap = {
 	message: [ControlResponse];
@@ -17,7 +15,6 @@ type EventMap = {
 export default class PersonalNodeControlApi extends EventEmitter<EventMap> {
 	node: PersonalNode;
 
-	logs = new PersistentSubject<string[]>([]);
 	config = new Subject<PrivateNodeConfig>();
 	databaseStats = new Subject<DatabaseStats>();
 	receiverStatus = new Subject<ReceiverStatus>();
@@ -30,7 +27,6 @@ export default class PersonalNodeControlApi extends EventEmitter<EventMap> {
 		this.node.authenticated.subscribe((authenticated) => {
 			this.emit('authenticated', authenticated);
 			if (authenticated) {
-				this.node.sendControlMessage(['CONTROL', 'LOG', 'SUBSCRIBE']);
 				this.node.sendControlMessage(['CONTROL', 'CONFIG', 'SUBSCRIBE']);
 				this.node.sendControlMessage(['CONTROL', 'RECEIVER', 'SUBSCRIBE']);
 				this.node.sendControlMessage(['CONTROL', 'DATABASE', 'SUBSCRIBE']);
@@ -60,22 +56,6 @@ export default class PersonalNodeControlApi extends EventEmitter<EventMap> {
 			case 'NOTIFICATIONS':
 				if (response[2] === 'VAPID-KEY') this.vapidKey.next(response[3]);
 				break;
-
-			case 'LOG': {
-				switch (response[2]) {
-					case 'LINE':
-						const newArr = [...this.logs.value, response[3]];
-						while (newArr.length >= MAX_LOG_LINES) {
-							newArr.shift();
-						}
-						this.logs.next(newArr);
-						break;
-					case 'CLEAR':
-						this.logs.next([]);
-						break;
-				}
-				break;
-			}
 
 			default:
 				break;
