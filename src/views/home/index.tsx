@@ -25,7 +25,13 @@ export default function HomeView() {
 				direction="column"
 			>
 				<Flex as="form" gap="2" w="full" p="4" mt="40" maxW="xl" onSubmit={submit}>
-					<Input placeholder="Search your network..." p="4" {...register('query', { required: true })} isRequired />
+					<Input
+						type="search"
+						placeholder="Search your network..."
+						p="4"
+						{...register('query', { required: true })}
+						isRequired
+					/>
 					<IconButton type="submit" icon={<ChevronRightIcon boxSize={6} />} aria-label="Search" colorScheme="brand" />
 				</Flex>
 			</Flex>

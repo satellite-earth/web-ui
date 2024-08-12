@@ -5,7 +5,7 @@ import { resetPrivateNodeURL } from '../../services/personal-node';
 import { controlApi } from '../../services/personal-node';
 import useOverviewReport from '../../hooks/reports/use-overview-report';
 import useSubject from '../../hooks/use-subject';
-import SimpleHeader from '../../components/simple-header';
+import SimpleHeader from '../../components/layout/presets/simple-header';
 import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 import UserName from '../../components/user/user-name';
@@ -21,12 +21,6 @@ export default function DashboardHomeView() {
 	const mobile = useBreakpointValue({ base: true, lg: false });
 
 	const [filter, setFilter] = useState('');
-
-	const disconnect = () => {
-		if (confirm('Disconnect from personal node?')) {
-			resetPrivateNodeURL();
-		}
-	};
 
 	return (
 		<>

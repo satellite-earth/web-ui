@@ -8,7 +8,7 @@ import { getPubkeysFromList } from '@satellite-earth/core/helpers/nostr/lists.js
 
 import useSubject from '../../hooks/use-subject';
 import ConversationButton from './components/conversation-button';
-import SimpleHeader from '../../components/simple-header';
+import SimpleHeader from '../../components/layout/presets/simple-header';
 import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import draftService from '../../services/drafts';
 import useConversationsReport from '../../hooks/reports/use-conversations-report';

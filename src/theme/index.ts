@@ -4,6 +4,10 @@ import { DeepPartial, Theme, extendTheme } from '@chakra-ui/react';
 import { pallet } from './helpers';
 
 export const theme = extendTheme({
+	config: {
+		initialColorMode: 'system',
+		useSystemColorMode: true,
+	},
 	colors: {
 		gray: pallet(chroma.scale(['#eeeeee', '#0e0e0e']).colors(10)),
 		brand: pallet(chroma.scale(['#dbaa31', '#dbaa31']).colors(10)),

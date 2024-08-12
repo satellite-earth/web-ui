@@ -26,6 +26,9 @@ import ConnectionStatus from './components/layout/connection-status';
 import NostrConnectView from './views/login/nostr-connect';
 import UserProfileView from './views/profile';
 import SearchView from './views/search';
+import DisplaySettingsView from './views/settings/tabs/display-settings';
+import NodeInfoSettingsView from './views/settings/tabs/node-info';
+import NotificationSettingsView from './views/settings/tabs/notifications';
 
 const router = createBrowserRouter([
 	{
@@ -72,22 +75,6 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: 'settings',
-		element: (
-			<RequirePersonalNode>
-				<RequirePersonalNodeAuth>
-					<AppLayout />
-				</RequirePersonalNodeAuth>
-			</RequirePersonalNode>
-		),
-		children: [
-			{
-				path: '',
-				element: <SettingsView />,
-			},
-		],
-	},
-	{
 		path: '',
 		element: (
 			<RequirePersonalNode>
@@ -116,6 +103,16 @@ const router = createBrowserRouter([
 			{
 				path: 'search',
 				element: <SearchView />,
+			},
+			{
+				path: 'settings',
+				element: <SettingsView />,
+				children: [
+					{ path: 'display', element: <DisplaySettingsView /> },
+					{ path: 'notifications', element: <NotificationSettingsView /> },
+					{ path: 'node-info', element: <NodeInfoSettingsView /> },
+					{ path: '', element: <DisplaySettingsView /> },
+				],
 			},
 			{
 				path: '',

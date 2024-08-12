@@ -9,7 +9,7 @@ import TextMessage from './text-message';
 import { useCurrentCommunity } from '../../../../providers/local/community-provider';
 import Settings01 from '../../../../components/icons/components/settings-01';
 import EditChannelModal from '../../../../components/channel/edit-channel-modal';
-import SimpleHeader from '../../../../components/simple-header';
+import SimpleHeader from '../../../../components/layout/presets/simple-header';
 
 export default function TextChannelView({ channelId, channel }: { channelId: string; channel?: NostrEvent }) {
 	const edit = useDisclosure();

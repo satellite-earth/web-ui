@@ -13,8 +13,10 @@ import { BackButton } from '../../components/back-button';
 import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import useDMSearchReport from '../../hooks/reports/use-dm-search-report';
 import ConversationCard from './components/conversation-card';
+import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 
 export default function SearchView() {
+	const shouldAutoFocusInput = useBreakpointValue({ base: false, lg: true });
 	const [search, setSearch] = useSearchParams();
 	const { register, handleSubmit, formState } = useForm({
 		defaultValues: { query: search.get('q') ?? '' },
@@ -98,6 +100,7 @@ export default function SearchView() {
 							isRequired
 							minLength={3}
 							placeholder="Search your node"
+							autoFocus={shouldAutoFocusInput}
 						/>
 						<IconButton
 							type="submit"
@@ -123,7 +126,7 @@ export default function SearchView() {
 				</Flex>
 
 				<Flex w="full" overflowY="auto" pb="12">
-					<Flex maxW="4xl" w="full" mx="auto" direction="column" gap="4">
+					<Flex maxW="4xl" w="full" mx="auto" direction="column" gap="4" px="2">
 						{showUsers.isOpen && profiles.length > 0 && (
 							<Flex overflowX="auto" overflowY="hidden" gap="2" p="4" as={LinkBox} flexShrink={0}>
 								{profiles.map((event) => (
