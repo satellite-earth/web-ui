@@ -8,6 +8,9 @@ const config: CapacitorConfig = {
 	android: {
 		allowMixedContent: true,
 	},
+	server: {
+		cleartext: true,
+	},
 	plugins: {
 		CapacitorHttp: {
 			enabled: true,
