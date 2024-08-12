@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
-import { Button, ButtonGroup, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Button, ButtonGroup, Flex } from '@chakra-ui/react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ReportResults } from '@satellite-earth/core/types/control-api/reports.js';
@@ -14,6 +14,7 @@ import draftService from '../../services/drafts';
 import useConversationsReport from '../../hooks/reports/use-conversations-report';
 import useUserContactList from '../../hooks/use-user-contact-list';
 import useCurrentAccount from '../../hooks/use-current-account';
+import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 
 function Conversation({ index, style, data }: ListChildComponentProps<ReportResults['CONVERSATIONS'][]>) {
 	const conversation = data[index];

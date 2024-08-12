@@ -5,12 +5,12 @@ import { resetPrivateNodeURL } from '../../services/personal-node';
 import { controlApi } from '../../services/personal-node';
 import useOverviewReport from '../../hooks/reports/use-overview-report';
 import useSubject from '../../hooks/use-subject';
-import { useBreakpointValue } from '@chakra-ui/react';
 import SimpleHeader from '../../components/simple-header';
 import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 import UserName from '../../components/user/user-name';
 import OverviewItem from '../../components/dashboard/overview-item';
+import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 
 /** @deprecated old dashboard */
 export default function DashboardHomeView() {

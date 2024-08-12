@@ -1,7 +1,6 @@
-import { useBreakpointValue } from '@chakra-ui/react';
-
 import MobileLayout from './mobile';
 import DesktopLayout from './desktop';
+import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 
 export default function AppLayout() {
 	const mobile = useBreakpointValue({ base: true, md: false });
