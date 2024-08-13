@@ -1,6 +1,6 @@
-import { PropsWithChildren, useMemo } from 'react';
+import { useMemo } from 'react';
 import { nip19 } from 'nostr-tools';
-import { Box, Button, ButtonGroup, ButtonProps, Code, Flex, Heading, IconButton, Link, Text } from '@chakra-ui/react';
+import { Box, Button, ButtonProps, Code, Flex, Heading, IconButton, Link, Text } from '@chakra-ui/react';
 import { Outlet, Link as RouterLink, useMatch } from 'react-router-dom';
 
 import useParamsProfilePointer from '../../hooks/use-params-pubkey-pointer';
@@ -8,29 +8,12 @@ import useUserMetadata from '../../hooks/use-user-metadata';
 import UserAvatar from '../../components/user/user-avatar';
 import UserName from '../../components/user/user-name';
 import UserDnsIdentity from '../../components/user/user-dns-identity';
-import UserFollowButton from './components/user-follow-button';
 import UserAbout from '../../components/user/user-about';
 import { DirectMessagesIcon } from '../../components/icons';
 import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import ErrorBoundary from '../../components/error-boundary';
-
-function NavItem({ children, to, ...props }: Omit<ButtonProps, 'variant' | 'colorScheme'> & { to: string }) {
-	const match = useMatch(to);
-
-	return (
-		<Button
-			as={RouterLink}
-			to={to}
-			justifyContent="flex-start"
-			{...props}
-			variant="ghost"
-			colorScheme={match ? 'brand' : undefined}
-		>
-			{children}
-		</Button>
-	);
-}
+import SimpleNavItem from '../../components/layout/presets/simple-nav-item';
 
 function UserProfilePage({ pubkey }: { pubkey: string }) {
 	const match = useMatch('/profile/:address');
@@ -99,9 +82,9 @@ function UserProfilePage({ pubkey }: { pubkey: string }) {
 						<UserAbout pubkey={pubkey} mt="2" noOfLines={3} />
 					</Box>
 					<Flex direction="column" p="2" gap="2">
-						<NavItem to={`/profile/${npub}`}>Summary</NavItem>
-						<NavItem to={`/profile/${npub}/notes`}>Notes</NavItem>
-						<NavItem to={`/profile/${npub}/articles`}>Articles</NavItem>
+						<SimpleNavItem to={`/profile/${npub}`}>Summary</SimpleNavItem>
+						<SimpleNavItem to={`/profile/${npub}/notes`}>Notes</SimpleNavItem>
+						<SimpleNavItem to={`/profile/${npub}/articles`}>Articles</SimpleNavItem>
 					</Flex>
 				</Flex>
 				{!isMobile && (
