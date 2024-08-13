@@ -1,4 +1,4 @@
-import { Flex, LinkBox } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Flex, LinkBox } from '@chakra-ui/react';
 import { nip19, NostrEvent } from 'nostr-tools';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -10,20 +10,8 @@ import UserDnsIdentity from '../../../components/user/user-dns-identity';
 
 export default function ProfileCard({ profile }: { profile: NostrEvent }) {
 	return (
-		<Flex
-			as={LinkBox}
-			direction="column"
-			maxW="xs"
-			minW="8rem"
-			h="8rem"
-			flexShrink={0}
-			rounded="md"
-			borderWidth="1px"
-			p="2"
-			overflow="hidden"
-			gap="2"
-		>
-			<Flex gap="2">
+		<Card as={LinkBox} direction="column" maxW="xs" minW="8rem" flexShrink={0} rounded="md" overflow="hidden">
+			<CardHeader display="flex" gap="4">
 				<UserAvatar pubkey={profile.pubkey} />
 				<Flex direction="column">
 					<HoverLinkOverlay as={RouterLink} to={`/profile/${nip19.npubEncode(profile.pubkey)}`} isTruncated>
@@ -31,8 +19,10 @@ export default function ProfileCard({ profile }: { profile: NostrEvent }) {
 					</HoverLinkOverlay>
 					<UserDnsIdentity pubkey={profile.pubkey} />
 				</Flex>
-			</Flex>
-			<UserAbout pubkey={profile.pubkey} noOfLines={2} />
-		</Flex>
+			</CardHeader>
+			<CardBody pt="0">
+				<UserAbout pubkey={profile.pubkey} noOfLines={2} />
+			</CardBody>
+		</Card>
 	);
 }

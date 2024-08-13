@@ -3,6 +3,7 @@ import { Outlet, useMatch, Link as RouterLink } from 'react-router-dom';
 
 import SimpleHeader from '../../components/layout/presets/simple-header';
 import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
+import ErrorBoundary from '../../components/error-boundary';
 
 export default function SettingsView() {
 	const match = useMatch('/settings');
@@ -33,10 +34,18 @@ export default function SettingsView() {
 						</Button>
 					</Flex>
 				</Flex>
-				{!isMobile && <Outlet />}
+				{!isMobile && (
+					<ErrorBoundary>
+						<Outlet />
+					</ErrorBoundary>
+				)}
 			</Flex>
 		);
 	}
 
-	return <Outlet />;
+	return (
+		<ErrorBoundary>
+			<Outlet />
+		</ErrorBoundary>
+	);
 }

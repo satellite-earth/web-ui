@@ -29,6 +29,8 @@ import SearchView from './views/search';
 import DisplaySettingsView from './views/settings/tabs/display-settings';
 import NodeInfoSettingsView from './views/settings/tabs/node-info';
 import NotificationSettingsView from './views/settings/tabs/notifications';
+import UserArticlesView from './views/profile/articles';
+import UserSummaryView from './views/profile/summary';
 
 const router = createBrowserRouter([
 	{
@@ -97,8 +99,13 @@ const router = createBrowserRouter([
 				],
 			},
 			{
-				path: 'profile/:pointer',
+				path: 'profile/:pubkey',
 				element: <UserProfileView />,
+				children: [
+					{ path: '', element: <UserSummaryView /> },
+					{ path: 'messages', element: <DirectMessageConversationView /> },
+					{ path: 'articles', element: <UserArticlesView /> },
+				],
 			},
 			{
 				path: 'search',

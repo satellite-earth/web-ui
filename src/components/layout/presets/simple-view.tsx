@@ -1,5 +1,6 @@
-import { Flex } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
+import { Flex } from '@chakra-ui/react';
+
 import SimpleHeader from './simple-header';
 
 export default function SimpleView({ children, title }: PropsWithChildren<{ title: string }>) {
