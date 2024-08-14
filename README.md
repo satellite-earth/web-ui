@@ -3,8 +3,8 @@
 >
 > BUILD IN PUBLIC
 
-# Satellite Community UI
+# Satellite UI
 
-Community UI is a [NIP-29](https://github.com/nostr-protocol/nips/blob/master/29.md) compatible Discord-like social frontend for managing and interacting with one or more [public Satellite nodes](https://github.com/satellite-earth/public-node).
+Satellite UI is a PWA app for managing and interacting with [Personal Satellite nodes](https://github.com/satellite-earth/personal-node).
 
-It's bundled by [Satelite Desktop](https://github.com/satellite-earth/desktop) but can also be run standalone in a web browser.
+It's bundled by [Satellite Desktop](https://github.com/satellite-earth/desktop) but can also be run standalone in a web browser.
