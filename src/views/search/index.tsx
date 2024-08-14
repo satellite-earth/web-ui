@@ -1,6 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, ButtonGroup, Flex, Heading, IconButton, Input, LinkBox, useDisclosure } from '@chakra-ui/react';
+import {
+	Alert,
+	AlertIcon,
+	Button,
+	ButtonGroup,
+	Flex,
+	Heading,
+	IconButton,
+	Input,
+	LinkBox,
+	useDisclosure,
+} from '@chakra-ui/react';
 import { kinds, NostrEvent } from 'nostr-tools';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
@@ -27,7 +38,9 @@ export default function SearchView() {
 	const showMessages = useDisclosure({ defaultIsOpen: true });
 	const showEvents = useDisclosure({ defaultIsOpen: true });
 
+	const [searchError, setSearchError] = useState<string>();
 	const [profiles, setProfiles] = useState<NostrEvent[]>([]);
+
 	const [events, setEvents] = useState<NostrEvent[]>([]);
 
 	const submit = handleSubmit((values) => {
@@ -46,6 +59,7 @@ export default function SearchView() {
 			return;
 		}
 
+		setSearchError('');
 		setProfiles([]);
 		const profileSearch = personalNode?.subscribe(
 			[
@@ -61,6 +75,9 @@ export default function SearchView() {
 				},
 				oneose: () => {
 					if (profileSearch) profileSearch.close();
+				},
+				onclose: (reason) => {
+					if (reason !== 'closed by caller') setSearchError(reason);
 				},
 			},
 		);
@@ -127,6 +144,12 @@ export default function SearchView() {
 
 				<Flex w="full" overflowY="auto" pb="12">
 					<Flex maxW="4xl" w="full" mx="auto" direction="column" gap="4" px="2">
+						{searchError && (
+							<Alert status="warning">
+								<AlertIcon />
+								{searchError}
+							</Alert>
+						)}
 						{showUsers.isOpen && profiles.length > 0 && (
 							<Flex overflowX="auto" overflowY="hidden" gap="2" p="4" as={LinkBox} flexShrink={0}>
 								{profiles.map((event) => (
