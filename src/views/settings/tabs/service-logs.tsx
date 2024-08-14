@@ -5,10 +5,11 @@ import Convert from 'ansi-to-html';
 import useLogsReport from '../../../hooks/reports/use-logs-report';
 import useServicesReport from '../../../hooks/reports/use-services-report';
 import Timestamp from '../../../components/timestamp';
+import SimpleView from '../../../components/layout/presets/simple-view';
 
 const convert = new Convert();
 
-export default function LogsTab() {
+export default function ServiceLogsView() {
 	const [service, setService] = useState<string | undefined>(undefined);
 	const logs = useLogsReport(service);
 	const raw = useDisclosure();
@@ -34,8 +35,8 @@ export default function LogsTab() {
 	const services = useServicesReport();
 
 	return (
-		<>
-			<Flex gap="2" p="2" alignItems="center">
+		<SimpleView title="Service Logs">
+			<Flex gap="4" alignItems="center">
 				<Select
 					placeholder="All Services"
 					maxW="xs"
@@ -77,6 +78,6 @@ export default function LogsTab() {
 							</p>
 						))}
 			</Box>
-		</>
+		</SimpleView>
 	);
 }

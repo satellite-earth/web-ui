@@ -31,6 +31,7 @@ import NodeInfoSettingsView from './views/settings/tabs/node-info';
 import NotificationSettingsView from './views/settings/tabs/notifications';
 import UserArticlesView from './views/profile/articles';
 import UserSummaryView from './views/profile/summary';
+import ServiceLogsView from './views/settings/tabs/service-logs';
 
 const router = createBrowserRouter([
 	{
@@ -115,10 +116,11 @@ const router = createBrowserRouter([
 				path: 'settings',
 				element: <SettingsView />,
 				children: [
+					{ path: '', element: <DisplaySettingsView /> },
 					{ path: 'display', element: <DisplaySettingsView /> },
 					{ path: 'notifications', element: <NotificationSettingsView /> },
 					{ path: 'node-info', element: <NodeInfoSettingsView /> },
-					{ path: '', element: <DisplaySettingsView /> },
+					{ path: 'logs', element: <ServiceLogsView /> },
 				],
 			},
 			{
