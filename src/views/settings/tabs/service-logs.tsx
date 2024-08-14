@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { Box, Flex, Select, Spacer, Switch, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Select, Spacer, Switch, useDisclosure } from '@chakra-ui/react';
 import Convert from 'ansi-to-html';
 
 import useLogsReport from '../../../hooks/reports/use-logs-report';
 import useServicesReport from '../../../hooks/reports/use-services-report';
 import Timestamp from '../../../components/timestamp';
 import SimpleView from '../../../components/layout/presets/simple-view';
+import { controlApi } from '../../../services/personal-node';
 
 const convert = new Convert();
 
 export default function ServiceLogsView() {
 	const [service, setService] = useState<string | undefined>(undefined);
-	const logs = useLogsReport(service);
+	const { report, logs } = useLogsReport(service);
 	const raw = useDisclosure();
 
 	const scrollBox = useRef<HTMLDivElement | null>(null);
@@ -51,6 +52,16 @@ export default function ServiceLogsView() {
 						))}
 					</optgroup>
 				</Select>
+				<Button
+					onClick={() => {
+						if (controlApi) {
+							controlApi?.send(service ? ['CONTROL', 'LOGS', 'CLEAR', service] : ['CONTROL', 'LOGS', 'CLEAR']);
+							report?.clear();
+						}
+					}}
+				>
+					Clear
+				</Button>
 				<Spacer />
 				<Switch checked={raw.isOpen} onChange={raw.onToggle}>
 					Show Raw
@@ -63,7 +74,7 @@ export default function ServiceLogsView() {
 						.map((entry) => (
 							<p key={entry.timestamp + entry.message}>
 								<Timestamp
-									timestamp={entry.timestamp}
+									timestamp={Math.round(entry.timestamp / 1000)}
 									color="blue.500"
 									minW="2em"
 									display="inline-block"

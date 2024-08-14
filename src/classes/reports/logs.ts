@@ -15,4 +15,8 @@ export default class LogsReport extends Report<'LOGS'> {
 		this.ids.add(result.id);
 		this.entries.next(this.entries.value.concat(result).sort((a, b) => b.timestamp - a.timestamp));
 	}
+
+	clear() {
+		this.entries.next([]);
+	}
 }
