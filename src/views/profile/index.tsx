@@ -47,7 +47,7 @@ function UserProfilePage({ pubkey }: { pubkey: string }) {
 						borderBottomWidth={metadata?.banner ? undefined : 1}
 						position="relative"
 					>
-						<UserAvatar pubkey={pubkey} size="xl" float="left" />
+						<UserAvatar pubkey={pubkey} size="xl" float="left" boxShadow="lg" />
 						<IconButton
 							icon={<DirectMessagesIcon boxSize={5} />}
 							as={RouterLink}
