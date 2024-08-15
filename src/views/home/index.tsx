@@ -24,7 +24,7 @@ export default function HomeView() {
 				gap="2"
 				direction="column"
 			>
-				<Flex as="form" gap="2" w="full" p="4" mt="40" maxW="xl" onSubmit={submit}>
+				<Flex as="form" gap="2" w="full" p="4" maxW="xl" onSubmit={submit}>
 					<Input
 						type="search"
 						placeholder="Search your network..."

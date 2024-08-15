@@ -89,7 +89,7 @@ export default function DesktopSideNav() {
 				variant="outline"
 				to="/messages"
 			/>
-			<IconButton
+			{/* <IconButton
 				as={RouterLink}
 				aria-label="Search"
 				title="Search"
@@ -99,7 +99,7 @@ export default function DesktopSideNav() {
 				fontSize="24"
 				variant="outline"
 				to="/search"
-			/>
+			/> */}
 			{/* <Divider /> */}
 			{/* {communities.map((community) => (
 				<CommunityButton key={community.pubkey} community={community} />
