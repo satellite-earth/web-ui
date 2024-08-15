@@ -111,6 +111,7 @@ const router = createBrowserRouter([
 				element: <UserProfileView />,
 				children: [
 					{ path: '', element: <UserSummaryView /> },
+					{ path: 'summary', element: <UserSummaryView /> },
 					{ path: 'messages', element: <DirectMessageConversationView /> },
 					{ path: 'articles', element: <UserArticlesView /> },
 				],

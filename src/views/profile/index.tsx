@@ -82,7 +82,7 @@ function UserProfilePage({ pubkey }: { pubkey: string }) {
 						<UserAbout pubkey={pubkey} mt="2" noOfLines={3} />
 					</Box>
 					<Flex direction="column" p="2" gap="2">
-						<SimpleNavItem to={`/profile/${npub}`}>Summary</SimpleNavItem>
+						<SimpleNavItem to={`/profile/${npub}/summary`}>Summary</SimpleNavItem>
 						<SimpleNavItem to={`/profile/${npub}/notes`}>Notes</SimpleNavItem>
 						<SimpleNavItem to={`/profile/${npub}/articles`}>Articles</SimpleNavItem>
 					</Flex>
