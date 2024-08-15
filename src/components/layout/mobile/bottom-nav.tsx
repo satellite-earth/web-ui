@@ -18,7 +18,7 @@ export default function MobileBottomNav() {
 			/>
 			<IconButton
 				as={RouterLink}
-				to="/dashboard"
+				to="/network"
 				icon={<SatelliteDishIcon boxSize={6} />}
 				aria-label="Network"
 				flex={1}

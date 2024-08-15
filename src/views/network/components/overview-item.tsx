@@ -2,9 +2,9 @@ import { Flex, LinkBox } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { nip19 } from 'nostr-tools';
 
-import UserName from '../user/user-name';
-import UserAvatar from '../user/user-avatar';
-import HoverLinkOverlay from '../hover-link-overlay';
+import UserName from '../../../components/user/user-name';
+import UserAvatar from '../../../components/user/user-avatar';
+import HoverLinkOverlay from '../../../components/hover-link-overlay';
 
 export default function OverviewItem({ pubkey, events }: { pubkey: string; events: number }) {
 	return (

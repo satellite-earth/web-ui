@@ -12,7 +12,8 @@ import LoginView from './views/login';
 import LoginStartView from './views/login/start';
 import AppLayout from './components/layout';
 import ConnectView from './views/connect';
-import DashboardHomeView from './views/dashboard';
+import NetworkView from './views/network';
+import OverviewList from './views/network/components/overview-list';
 import PersonalNodeAuthView from './views/connect/auth';
 import MessagesView from './views/messages';
 import DirectMessageConversationView from './views/messages/conversation';
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
 		element: <PersonalNodeSetupView />,
 	},
 	{
-		path: 'dashboard',
+		path: 'network',
 		element: (
 			<RequirePersonalNode>
 				<RequirePersonalNodeAuth>
@@ -73,7 +74,13 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '',
-				element: <DashboardHomeView />,
+				element: <NetworkView />,
+				children: [
+					{
+						path: '',
+						element: <OverviewList />,
+					},
+				],
 			},
 		],
 	},

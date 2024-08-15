@@ -121,7 +121,7 @@ export default function DesktopSideNav() {
 				title="Network"
 				icon={<SatelliteDishIcon boxSize={6} />}
 				variant="outline"
-				to="/dashboard"
+				to="/network"
 			/>
 			<IconButton
 				as={RouterLink}

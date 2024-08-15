@@ -77,7 +77,7 @@ export default function DrawerNav({ isOpen, onClose, ...props }: Omit<ModalProps
 						</Center>
 						<Text fontWeight="bold">Messages</Text>
 					</Flex>
-					<Flex as={RouterLink} to="/dashboard" alignItems="center" p="2" gap="2" tabIndex={0} cursor="pointer">
+					<Flex as={RouterLink} to="/network" alignItems="center" p="2" gap="2" tabIndex={0} cursor="pointer">
 						<Center w="10" h="10">
 							<SatelliteDishIcon boxSize={6} />
 						</Center>
