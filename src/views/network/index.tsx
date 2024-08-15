@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Code, Flex } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 // import { controlApi } from '../../services/personal-node';
@@ -10,12 +10,15 @@ import { Outlet } from 'react-router-dom';
 // import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 // import UserName from '../../components/user/user-name';
 import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
+import useScrapperOverviewReport from '../../hooks/reports/use-scrapper-overview-report';
 
 export default function NetworkView() {
 	// const overview = useOverviewReport();
 	// const status = useSubject(controlApi?.receiverStatus);
 	// const config = useSubject(controlApi?.config);
 	const isMobile = useBreakpointValue({ base: true, lg: false });
+
+	const scrapper = useScrapperOverviewReport();
 
 	if (isMobile) {
 		return (
@@ -55,6 +58,7 @@ export default function NetworkView() {
 							else controlApi?.send(['CONTROL', 'RECEIVER', 'START']);
 						}}
 					/> */}
+					<Code whiteSpace="pre">{JSON.stringify(scrapper, null, 2)}</Code>
 				</Flex>
 			</Flex>
 			<Flex flexDirection="column" w="full" overflow="scroll">
