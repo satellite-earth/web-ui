@@ -1,4 +1,15 @@
-import { Button, ButtonGroup, Code, Flex, Heading, Switch } from '@chakra-ui/react';
+import {
+	Alert,
+	AlertDescription,
+	AlertIcon,
+	AlertTitle,
+	Button,
+	ButtonGroup,
+	Code,
+	Flex,
+	Heading,
+	Switch,
+} from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 // import { controlApi } from '../../services/personal-node';
@@ -88,6 +99,13 @@ export default function NetworkView() {
 							Stop
 						</Button>
 					</ButtonGroup>
+					{receiver?.startError && (
+						<Alert status="error">
+							<AlertIcon />
+							<AlertTitle>Failed to start!</AlertTitle>
+							<AlertDescription>{receiver.startError}</AlertDescription>
+						</Alert>
+					)}
 				</Flex>
 			</Flex>
 			<Flex flexDirection="column" w="full" overflow="scroll">
