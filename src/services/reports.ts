@@ -12,7 +12,8 @@ import ConversationsReport from '../classes/reports/conversations';
 import LogsReport from '../classes/reports/logs';
 import ServicesReport from '../classes/reports/services';
 import { DMSearchReport } from '../classes/reports/dm-search';
-import ScrapperOverviewReport from '../classes/reports/scrapper-overview';
+import ScrapperStatusReport from '../classes/reports/scrapper-status';
+import ReceiverStatusReport from '../classes/reports/receiver-status';
 
 // register report handler classes here
 export type ReportTypes = {
@@ -21,7 +22,8 @@ export type ReportTypes = {
 	LOGS: LogsReport;
 	SERVICES: ServicesReport;
 	DM_SEARCH: DMSearchReport;
-	SCRAPPER_OVERVIEW: ScrapperOverviewReport;
+	SCRAPPER_STATUS: ScrapperStatusReport;
+	RECEIVER_STATUS: ReceiverStatusReport;
 };
 const ReportTypes = {
 	OVERVIEW: OverviewReport,
@@ -29,7 +31,8 @@ const ReportTypes = {
 	LOGS: LogsReport,
 	SERVICES: ServicesReport,
 	DM_SEARCH: DMSearchReport,
-	SCRAPPER_OVERVIEW: ScrapperOverviewReport,
+	SCRAPPER_STATUS: ScrapperStatusReport,
+	RECEIVER_STATUS: ReceiverStatusReport,
 } as const;
 
 class ReportManager {

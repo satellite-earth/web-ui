@@ -2,7 +2,7 @@ import useReport from '../use-report';
 import useSubject from '../use-subject';
 
 export default function useScrapperOverviewReport() {
-	const report = useReport('SCRAPPER_OVERVIEW', 'scrapper', {});
+	const report = useReport('SCRAPPER_STATUS', 'scrapper-status', {});
 
-	return useSubject(report?.value);
+	return useSubject(report?.status);
 }

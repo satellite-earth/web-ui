@@ -1,4 +1,4 @@
-import { Code, Flex } from '@chakra-ui/react';
+import { Button, ButtonGroup, Code, Flex, Heading, Switch } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 // import { controlApi } from '../../services/personal-node';
@@ -10,7 +10,9 @@ import { Outlet } from 'react-router-dom';
 // import PanelItemToggle from '../../components/dashboard/panel-item-toggle';
 // import UserName from '../../components/user/user-name';
 import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
-import useScrapperOverviewReport from '../../hooks/reports/use-scrapper-overview-report';
+import useScrapperStatusReport from '../../hooks/reports/use-scrapper-status-report';
+import { controlApi } from '../../services/personal-node';
+import useReceiverStatusReport from '../../hooks/reports/use-receiver-status-report';
 
 export default function NetworkView() {
 	// const overview = useOverviewReport();
@@ -18,7 +20,8 @@ export default function NetworkView() {
 	// const config = useSubject(controlApi?.config);
 	const isMobile = useBreakpointValue({ base: true, lg: false });
 
-	const scrapper = useScrapperOverviewReport();
+	const scrapper = useScrapperStatusReport();
+	const receiver = useReceiverStatusReport();
 
 	if (isMobile) {
 		return (
@@ -58,7 +61,33 @@ export default function NetworkView() {
 							else controlApi?.send(['CONTROL', 'RECEIVER', 'START']);
 						}}
 					/> */}
+					<Switch
+						checked={scrapper?.running ?? false}
+						onChange={() => controlApi?.send(['CONTROL', 'SCRAPPER', scrapper?.running ? 'STOP' : 'START'])}
+						isDisabled={!scrapper}
+					>
+						Scrapper
+					</Switch>
 					<Code whiteSpace="pre">{JSON.stringify(scrapper, null, 2)}</Code>
+
+					{/* NOTE: this is temporary till the receiver has its own view */}
+					<Heading size="sm">Receiver ({receiver?.status})</Heading>
+					<ButtonGroup size="sm">
+						<Button
+							colorScheme="green"
+							isDisabled={receiver?.status === 'starting' || receiver?.status === 'running'}
+							onClick={() => controlApi?.send(['CONTROL', 'RECEIVER', 'START'])}
+						>
+							Start
+						</Button>
+						<Button
+							isDisabled={receiver?.status !== 'running'}
+							onClick={() => controlApi?.send(['CONTROL', 'RECEIVER', 'STOP'])}
+							colorScheme="red"
+						>
+							Stop
+						</Button>
+					</ButtonGroup>
 				</Flex>
 			</Flex>
 			<Flex flexDirection="column" w="full" overflow="scroll">
