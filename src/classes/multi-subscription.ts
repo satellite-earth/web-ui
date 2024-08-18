@@ -82,7 +82,9 @@ export default class MultiSubscription {
 
 				if (subscription) {
 					subscription.filters = this.filters;
-					subscription.update();
+					subscription.update().catch(err => {
+				// eat error
+					})
 				}
 			}
 		}
