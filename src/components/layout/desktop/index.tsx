@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 
 import DesktopSideNav from './side-nav';
 import ErrorBoundary from '../../error-boundary';
@@ -9,6 +9,7 @@ import ConnectionStatus from '../connection-status';
 export default function DesktopLayout() {
 	return (
 		<>
+			<ScrollRestoration />
 			<ConnectionStatus />
 			<NotificationsPrompt />
 			<Flex

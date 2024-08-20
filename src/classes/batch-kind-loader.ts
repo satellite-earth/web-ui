@@ -95,7 +95,7 @@ export default class BatchKindLoader {
 		if (this.next.size > 0) this.start();
 	}
 
-	update() {
+	async update() {
 		// copy everything from next to pending
 		for (const [key, defer] of this.next) this.pending.set(key, defer);
 		this.next.clear();
@@ -125,9 +125,14 @@ export default class BatchKindLoader {
 					.join(', '),
 			);
 
-			this.subscription.filters = Array.from(Object.values(filters));
-			this.subscription.update();
-			this.active = true;
+			try {
+				this.active = true;
+				this.subscription.filters = Array.from(Object.values(filters));
+				await this.subscription.update();
+			} catch (error) {
+				if (error instanceof Error) this.log(`Failed to update subscription`, error.message);
+				this.active = false;
+			}
 		} else {
 			this.log('Closing');
 			this.subscription.close();

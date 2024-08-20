@@ -13,6 +13,7 @@ export function BackButton({
 		<IconButton
 			icon={<ChevronLeftIcon boxSize={6} />}
 			aria-label="Back"
+			variant="ghost"
 			{...props}
 			onClick={() => (history.state.idx === 0 ? navigate(fallback ?? '/') : navigate(-1))}
 			hideFrom="lg"

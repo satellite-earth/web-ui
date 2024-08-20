@@ -1,7 +1,7 @@
 import { memo, useCallback, useContext, useEffect, useMemo } from 'react';
-import { ButtonGroup, Flex, IconButton } from '@chakra-ui/react';
-import { UNSAFE_DataRouterContext, useLocation, useNavigate } from 'react-router-dom';
-import { NostrEvent, kinds } from 'nostr-tools';
+import { ButtonGroup, Flex, IconButton, LinkBox } from '@chakra-ui/react';
+import { UNSAFE_DataRouterContext, useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { NostrEvent, kinds, nip19 } from 'nostr-tools';
 
 import { ThreadIcon } from '../../../components/icons';
 import UserAvatar from '../../../components/user/user-avatar';
@@ -23,6 +23,8 @@ import useRouterMarker from '../../../hooks/use-router-marker';
 import UserName from '../../../components/user/user-name';
 import { BackButton } from '../../../components/back-button';
 import { groupMessages } from '../../../helpers/nostr/thread';
+import useUserMetadata from '../../../hooks/use-user-metadata';
+import HoverLinkOverlay from '../../../components/hover-link-overlay';
 
 /** This is broken out from DirectMessageChatPage for performance reasons. Don't use outside of file */
 const ChatLog = memo(({ timeline }: { timeline: TimelineLoader }) => {
@@ -46,6 +48,9 @@ function DirectMessageConversationPage({ pubkey }: { pubkey: string }) {
 	const account = useCurrentAccount()!;
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	// refresh user metadata
+	useUserMetadata(pubkey, undefined, { alwaysRequest: true });
 
 	const { router } = useContext(UNSAFE_DataRouterContext)!;
 	const marker = useRouterMarker(router);
@@ -107,10 +112,12 @@ function DirectMessageConversationPage({ pubkey }: { pubkey: string }) {
 			<ThreadsProvider timeline={timeline}>
 				<IntersectionObserverProvider callback={callback}>
 					<Flex flexShrink={0} p="2" borderBottomWidth={1}>
-						<Flex gap="2" alignItems="center">
-							<BackButton />
+						<BackButton mr="2" />
+						<Flex gap="2" alignItems="center" py="2" pl="2" pr="4" m="-2" as={LinkBox}>
 							<UserAvatar pubkey={pubkey} size="sm" />
-							<UserName pubkey={pubkey} fontWeight="bold" />
+							<HoverLinkOverlay as={RouterLink} to={`/profile/${nip19.npubEncode(pubkey)}`}>
+								<UserName pubkey={pubkey} fontWeight="bold" />
+							</HoverLinkOverlay>
 							<UserDnsIdentity pubkey={pubkey} onlyIcon />
 						</Flex>
 						<ButtonGroup ml="auto">

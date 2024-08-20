@@ -8,6 +8,8 @@ import Subject, { PersistentSubject } from './subject';
 
 export default class PersonalNode extends Relay {
 	log = logger.extend('PrivateNode');
+	isFirstConnection = new PersistentSubject(true);
+	isFirstAuthentication = new PersistentSubject(true);
 	connectedSub = new PersistentSubject(false);
 	authenticated = new PersistentSubject(false);
 	onControlResponse = new ControlledObservable<ControlResponse>();
@@ -18,7 +20,10 @@ export default class PersonalNode extends Relay {
 		// override _connected property
 		Object.defineProperty(this, '_connected', {
 			get: () => this.connectedSub.value,
-			set: (v) => this.connectedSub.next(v),
+			set: (v) => {
+				this.connectedSub.next(v);
+				if (v && this.isFirstConnection.value) this.isFirstConnection.next(false);
+			},
 		});
 	}
 
@@ -32,6 +37,8 @@ export default class PersonalNode extends Relay {
 
 		if (!this.authenticated.value && !this.authPromise) {
 			this.authPromise = createDefer<string>();
+
+			if (this.isFirstAuthentication.value) this.authPromise.then(() => this.isFirstAuthentication.next(false));
 
 			// CONTROL auth
 			if (typeof auth === 'string') {

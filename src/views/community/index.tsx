@@ -1,4 +1,4 @@
-import { useBreakpointValue, Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 import CommunityContextProvider from '../../providers/local/community-provider';
@@ -9,6 +9,7 @@ import DesktopChannelNav from '../../components/layout/desktop/channel-nav';
 import MobileChannelNav from '../../components/layout/mobile/channel-nav';
 import CommunityAbout from '../../components/layout/mobile/community-about';
 import MobileCommunityButton from '../../components/layout/mobile/community-button';
+import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 
 export default function CommunityView() {
 	const mobile = useBreakpointValue({ base: true, md: false });

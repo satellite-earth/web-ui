@@ -1,39 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle, Button, Flex, Text } from '@chakra-ui/react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import personalNode from '../../services/personal-node';
 import WifiOff from '../icons/components/wifi-off';
 import useSubject from '../../hooks/use-subject';
+import useReconnectAction from '../../hooks/use-reconnect-action';
 
-const steps = [2, 2, 3, 3, 5, 5, 10, 20, 30, 60];
 function ReconnectPrompt() {
 	const location = useLocation();
-
-	const [tries, setTries] = useState(0);
-	const [count, setCount] = useState(steps[0]);
-	const [error, setError] = useState<Error>();
-
-	const connect = useCallback(async () => {
-		try {
-			await personalNode?.connect();
-		} catch (error) {
-			if (error instanceof Error) setError(error);
-			setCount(steps[Math.min(tries, steps.length - 1)]);
-			setTries((v) => v + 1);
-		}
-	}, [setError, setCount, setTries, tries]);
-
-	useEffect(() => {
-		const i = setInterval(() => {
-			setCount((v) => {
-				if (v === 0) return 0;
-				if (v === 1) connect();
-				return v - 1;
-			});
-		}, 1000);
-		return () => clearInterval(i);
-	}, [connect, setCount]);
+	const { error, count } = useReconnectAction();
 
 	return (
 		<>

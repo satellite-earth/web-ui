@@ -6,6 +6,7 @@ import useSubject from '../../hooks/use-subject';
 import { serviceWorkerRegistration } from '../../services/worker';
 import { enableNotifications, pushSubscription } from '../../services/notifications';
 import { controlApi } from '../../services/personal-node';
+import { IS_SATELLITE_DESKTOP } from '../../env';
 
 export default function NotificationsPrompt() {
 	const toast = useToast();
@@ -27,7 +28,7 @@ export default function NotificationsPrompt() {
 		setLoading(false);
 	};
 
-	if (hide || !registration || !!subscription || !vapidKey) return;
+	if (hide || !registration || !!subscription || !vapidKey || IS_SATELLITE_DESKTOP) return;
 
 	return (
 		<Alert status="info" flexWrap="wrap" gap="2" overflow="visible">

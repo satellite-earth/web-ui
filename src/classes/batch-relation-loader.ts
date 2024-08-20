@@ -101,7 +101,7 @@ export default class BatchRelationLoader {
 		if (this.next.size > 0) this.requestUpdate();
 	}
 
-	update() {
+	async update() {
 		// copy everything from next to pending
 		for (const [uid, defer] of this.next) this.pending.set(uid, defer);
 		this.next.clear();
@@ -120,12 +120,17 @@ export default class BatchRelationLoader {
 				else ids.push(uid);
 			}
 
-			this.subscription.filters = [];
-			if (ids.length > 0) this.subscription.filters.push({ '#e': ids, kinds: this.kinds });
-			if (ids.length > 0) this.subscription.filters.push({ '#a': cords, kinds: this.kinds });
+			try {
+				this.active = true;
+				this.subscription.filters = [];
+				if (ids.length > 0) this.subscription.filters.push({ '#e': ids, kinds: this.kinds });
+				if (ids.length > 0) this.subscription.filters.push({ '#a': cords, kinds: this.kinds });
 
-			this.subscription.update();
-			this.active = true;
+				await this.subscription.update();
+			} catch (error) {
+				if (error instanceof Error) this.log(`Failed to update subscription`, error.message);
+				this.active = false;
+			}
 		} else {
 			this.log('Closing');
 			this.subscription.close();

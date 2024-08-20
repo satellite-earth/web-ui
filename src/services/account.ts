@@ -1,44 +1,53 @@
+import { Account } from '../classes/accounts/account';
+import ExtensionAccount from '../classes/accounts/extension-account';
+import NostrConnectAccount from '../classes/accounts/nostr-connect-account';
+import NsecAccount from '../classes/accounts/nsec-account';
+import PasswordAccount from '../classes/accounts/password-account';
 import { PersistentSubject } from '../classes/subject';
+import { logger } from '../helpers/debug';
 import db from './db';
 
-type CommonAccount = {
-	pubkey: string;
-	relays?: string[];
-};
-export type LocalAccount = CommonAccount & {
-	type: 'local';
-	secKey: ArrayBuffer;
-	iv: Uint8Array;
-};
-export type ExtensionAccount = CommonAccount & {
-	type: 'extension';
-};
-export type AmberAccount = CommonAccount & {
-	type: 'amber';
-};
-
-export type Account = ExtensionAccount | LocalAccount | AmberAccount;
-
 class AccountService {
+	log = logger.extend('AccountService');
 	loading = new PersistentSubject(true);
 	accounts = new PersistentSubject<Account[]>([]);
 	current = new PersistentSubject<Account | null>(null);
 
-	async setup() {
-		const accounts = await db.getAll('accounts');
+	constructor() {
+		db.getAll('accounts').then((accountData) => {
+			const accounts: Account[] = [];
 
-		this.accounts.next(accounts);
+			for (const data of accountData) {
+				try {
+					const account = this.createAccountFromDatabaseRecord(data);
+					if (account) accounts.push(account);
+				} catch (error) {
+					this.log(`Failed to read account ${data.pubkey}`, data, error);
+				}
+			}
 
-		const lastAccount = localStorage.getItem('lastAccount');
-		if (lastAccount && this.hasAccount(lastAccount)) {
-			this.switchAccount(lastAccount);
-		} else if (window.satellite && window.nostr) {
-			const pubkey = await window.nostr.getPublicKey();
-			this.addAccount({ type: 'extension', pubkey });
-			this.switchAccount(pubkey);
+			this.accounts.next(accounts);
+
+			const lastAccount = localStorage.getItem('lastAccount');
+			if (lastAccount && this.hasAccount(lastAccount)) {
+				this.switchAccount(lastAccount);
+			} else localStorage.removeItem('lastAccount');
+
+			this.loading.next(false);
+		});
+	}
+
+	private createAccountFromDatabaseRecord(data: { type: string; pubkey: string }) {
+		switch (data.type) {
+			case 'local':
+				return new PasswordAccount(data.pubkey).fromJSON(data);
+			case 'nsec':
+				return new NsecAccount(data.pubkey).fromJSON(data);
+			case 'extension':
+				return new ExtensionAccount(data.pubkey).fromJSON(data);
+			case 'nostr-connect':
+				return new NostrConnectAccount(data.pubkey).fromJSON(data);
 		}
-
-		this.loading.next(false);
 	}
 
 	hasAccount(pubkey: string) {
@@ -58,12 +67,17 @@ class AccountService {
 			this.accounts.next(this.accounts.value.concat(account));
 		}
 
-		db.put('accounts', account);
+		db.put('accounts', account.toJSON());
 	}
-	removeAccount(pubkey: string) {
+	removeAccount(account: Account | string) {
+		const pubkey = account instanceof Account ? account.pubkey : account;
 		this.accounts.next(this.accounts.value.filter((acc) => acc.pubkey !== pubkey));
 
 		db.delete('accounts', pubkey);
+	}
+
+	saveAccount(account: Account) {
+		return db.put('accounts', account.toJSON());
 	}
 
 	switchAccount(pubkey: string) {
@@ -85,10 +99,9 @@ class AccountService {
 }
 
 const accountService = new AccountService();
-await accountService.setup();
 
 if (import.meta.env.DEV) {
-	// @ts-expect-error
+	// @ts-ignore
 	window.accountService = accountService;
 }
 

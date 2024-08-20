@@ -5,9 +5,11 @@ export default function Timestamp({ timestamp, ...props }: { timestamp: number }
 	const date = dayjs.unix(timestamp);
 	const now = dayjs();
 
-	let display = date.format('L');
+	let display = date.format('ll');
 
-	if (now.diff(date, 'week') <= 2) {
+	if (now.diff(date, 's') < 1) {
+		display = 'now';
+	} else if (now.diff(date, 'week') <= 2) {
 		if (now.diff(date, 'd') >= 1) {
 			display = Math.round(now.diff(date, 'd') * 10) / 10 + `d`;
 		} else if (now.diff(date, 'h') >= 1) {
@@ -20,7 +22,7 @@ export default function Timestamp({ timestamp, ...props }: { timestamp: number }
 	}
 
 	return (
-		<Box as="time" dateTime={date.toISOString()} title={date.format('LLL')} {...props}>
+		<Box as="time" dateTime={date.toISOString()} title={date.format('lll')} whiteSpace="pre" {...props}>
 			{display}
 		</Box>
 	);

@@ -82,7 +82,9 @@ export default class MultiSubscription {
 
 				if (subscription) {
 					subscription.filters = this.filters;
-					subscription.update();
+					subscription.update().catch(err => {
+				// eat error
+					})
 				}
 			}
 		}
@@ -104,6 +106,13 @@ export default class MultiSubscription {
 		this.updateSubscriptions();
 
 		return this;
+	}
+	waitForAllConnection(): Promise<void> {
+		return Promise.allSettled(
+			Array.from(this.relays)
+				.filter((r) => !r.connected)
+				.map((r) => r.connect()),
+		).then((v) => void 0);
 	}
 	close() {
 		if (this.state !== MultiSubscription.OPEN) return this;

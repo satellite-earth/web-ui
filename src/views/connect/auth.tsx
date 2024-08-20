@@ -2,11 +2,21 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { EventTemplate, VerifiedEvent } from 'nostr-tools';
 import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Checkbox, Flex, FormControl, FormLabel, Input, useDisclosure, useToast } from '@chakra-ui/react';
+import {
+	Button,
+	Checkbox,
+	Divider,
+	Flex,
+	FormControl,
+	FormLabel,
+	Input,
+	Text,
+	useDisclosure,
+	useToast,
+} from '@chakra-ui/react';
 
 import personalNode, { setPrivateNodeURL } from '../../services/personal-node';
 import Panel from '../../components/dashboard/panel';
-import TextButton from '../../components/dashboard/text-button';
 import useCurrentAccount from '../../hooks/use-current-account';
 import { useSigningContext } from '../../providers/global/signing-provider';
 import useSubject from '../../hooks/use-subject';
@@ -31,7 +41,7 @@ export function PersonalNodeAuthPage() {
 			if (!personalNode.connected) await personalNode.connect();
 			await personalNode.authenticate(auth);
 
-			navigate(location.state.back || '/', { replace: true });
+			navigate(location.state?.back || '/', { replace: true });
 		} catch (error) {
 			if (error instanceof Error) alert(error.message);
 		}
@@ -62,30 +72,36 @@ export function PersonalNodeAuthPage() {
 
 	return (
 		<Flex direction="column" alignItems="center" justifyContent="center" h="full">
-			<Panel as="form" label="AUTHENTICATE" minW="sm" onSubmit={submit} fontFamily="monospace">
+			<Panel as="form" label="AUTHENTICATE" minW="sm" onSubmit={submit}>
 				{formState.isSubmitting ? (
-					<p style={{ marginInline: 'auto', marginBlock: 0 }}>Loading...</p>
+					<Text>Loading...</Text>
 				) : (
 					<>
 						<FormControl>
 							<FormLabel htmlFor="auth">Auth Code</FormLabel>
 							<Input id="auth" {...register('auth', { required: true })} isRequired autoComplete="off" />
 						</FormControl>
-						<TextButton type="submit" ml="auto" mt="2">
-							[Login]
-						</TextButton>
+
+						<Flex mt="2" justifyContent="space-between">
+							<Checkbox isChecked={remember.isOpen} onChange={remember.onToggle}>
+								Remember Me
+							</Checkbox>
+							<Button type="submit" size="sm" colorScheme="brand">
+								Login
+							</Button>
+						</Flex>
 						{account && (
 							<>
-								<p style={{ marginInline: 'auto', marginBlock: 0 }}>--OR--</p>
-								<TextButton type="button" onClick={authenticateWithNostr}>
-									[Login with Nostr]
-								</TextButton>
+								<Flex gap="2" alignItems="center" my="2">
+									<Divider />
+									OR
+									<Divider />
+								</Flex>
+								<Button type="button" onClick={authenticateWithNostr} colorScheme="purple">
+									Login with Nostr
+								</Button>
 							</>
 						)}
-
-						<Checkbox fontFamily="monospace" mt="2" isChecked={remember.isOpen} onChange={remember.onToggle}>
-							Remember Me
-						</Checkbox>
 					</>
 				)}
 			</Panel>

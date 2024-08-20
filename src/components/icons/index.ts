@@ -7,6 +7,10 @@ import ChevronDown from './components/chevron-down';
 import ChevronUp from './components/chevron-up';
 import ChevronLeft from './components/chevron-left';
 import ChevronRight from './components/chevron-right';
+import QrCode02 from './components/qr-code-02';
+import SearchSm from './components/search-sm';
+import Settings02 from './components/settings-02';
+import SatelliteDish from './components/satellite-dish';
 
 export const VerifiedIcon = CheckVerified01;
 export const VerificationFailed = AlertOctagon;
@@ -28,3 +32,8 @@ export const ChevronDownIcon = ChevronDown;
 export const ChevronUpIcon = ChevronUp;
 export const ChevronLeftIcon = ChevronLeft;
 export const ChevronRightIcon = ChevronRight;
+
+export const QrCodeIcon = QrCode02;
+export const SearchIcon = SearchSm;
+export const SettingsIcon = Settings02;
+export const SatelliteDishIcon = SatelliteDish;

@@ -1,44 +1,61 @@
+import { useMemo, useState } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
-import { Flex, useBreakpointValue } from '@chakra-ui/react';
-import { useMount } from 'react-use';
+import { Button, ButtonGroup, Flex } from '@chakra-ui/react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { ReportResults } from '@satellite-earth/core/types/control-api/reports.js';
+import { getPubkeysFromList } from '@satellite-earth/core/helpers/nostr/lists.js';
 
 import useSubject from '../../hooks/use-subject';
 import ConversationButton from './components/conversation-button';
-import SimpleHeader from '../../components/simple-header';
-import BottomNav from '../../components/layout/mobile/bottom-nav';
-import { controlApi } from '../../services/personal-node';
+import SimpleHeader from '../../components/layout/presets/simple-header';
+import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import draftService from '../../services/drafts';
+import useConversationsReport from '../../hooks/reports/use-conversations-report';
+import useUserContactList from '../../hooks/use-user-contact-list';
+import useCurrentAccount from '../../hooks/use-current-account';
+import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 
-function Conversation({ index, style, data }: ListChildComponentProps<[string, any][]>) {
-	const [pubkey, stats] = data[index];
+function Conversation({ index, style, data }: ListChildComponentProps<ReportResults['CONVERSATIONS'][]>) {
+	const conversation = data[index];
 
 	return (
-		<ConversationButton pubkey={pubkey} lastReceived={stats.lastReceived} lastSent={stats.lastSent} style={style} />
+		<ConversationButton
+			pubkey={conversation.pubkey}
+			lastReceived={conversation.lastReceived}
+			lastSent={conversation.lastSent}
+			style={style}
+		/>
 	);
 }
 
 export default function MessagesView() {
 	const match = useMatch('/messages');
-	const stats = useSubject(controlApi?.directMessageStats);
+	const conversations = useConversationsReport();
+	const account = useCurrentAccount();
+	const contacts = useUserContactList(account?.pubkey);
+	const contactPubkeys = useMemo(
+		() => new Set(contacts && getPubkeysFromList(contacts).map((p) => p.pubkey)),
+		[contacts],
+	);
 
-	useMount(() => {
-		controlApi?.send(['CONTROL', 'DM', 'GET-STATS']);
-	});
+	const [filter, setFilter] = useState('contacts');
+
+	const contactsConversations = useMemo(
+		() => conversations?.filter((c) => contactPubkeys.has(c.pubkey)),
+		[contactPubkeys, conversations],
+	);
+	const otherConversations = useMemo(
+		() => conversations?.filter((c) => !contactPubkeys.has(c.pubkey)),
+		[contactPubkeys, conversations],
+	);
 
 	useSubject(draftService.onDraftsChange);
-	const sorted = Object.entries(stats || {}).sort((a, b) => {
-		const draftA = draftService.hasDraft(a[0]);
-		const draftB = draftService.hasDraft(b[0]);
 
-		if (draftA && !draftB) return -1;
-		else if (draftB && !draftA) return 1;
-		else
-			return (
-				Math.max(b[1].lastReceived ?? 0, b[1].lastSent ?? 0) - Math.max(a[1].lastReceived ?? 0, a[1].lastSent ?? 0)
-			);
-	});
+	const filtered =
+		filter === 'contacts' && contactsConversations && contactsConversations.length > 0
+			? contactsConversations
+			: otherConversations;
 
 	const isMobile = useBreakpointValue({ base: true, lg: false });
 	const showMenu = !isMobile || !!match;
@@ -54,15 +71,23 @@ export default function MessagesView() {
 						flexShrink={0}
 					>
 						<SimpleHeader title="Messages" />
+						<ButtonGroup m="2" size="sm" variant="outline">
+							<Button onClick={() => setFilter('contacts')} variant={filter === 'contacts' ? 'solid' : 'outline'}>
+								Contacts
+							</Button>
+							<Button onClick={() => setFilter('other')} variant={filter === 'other' ? 'solid' : 'outline'}>
+								Other
+							</Button>
+						</ButtonGroup>
 						<Flex h="full" flex={1} overflow="hidden">
 							<AutoSizer>
 								{({ width, height }) => (
 									<FixedSizeList
 										height={height}
 										width={width}
-										itemData={sorted}
-										itemCount={sorted.length}
-										itemKey={(i, data) => data[i][0]}
+										itemData={filtered ?? []}
+										itemCount={filtered?.length ?? 0}
+										itemKey={(i, data) => data[i].pubkey}
 										itemSize={64}
 									>
 										{Conversation}
@@ -73,7 +98,7 @@ export default function MessagesView() {
 					</Flex>
 					<Outlet />
 				</Flex>
-				<BottomNav />
+				<MobileBottomNav />
 			</>
 		);
 	}

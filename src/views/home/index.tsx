@@ -1,27 +1,41 @@
-import { Center, Flex, Text, useBreakpointValue } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Flex, IconButton, Input } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
-import BottomNav from '../../components/layout/mobile/bottom-nav';
-import { DirectMessagesIcon } from '../../components/icons';
+import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
+import { ChevronRightIcon } from '../../components/icons';
 
 export default function HomeView() {
-	const mobile = useBreakpointValue({ base: true, md: false });
+	const navigate = useNavigate();
+	const { register, handleSubmit } = useForm({ defaultValues: { query: '' } });
 
-	if (mobile) {
-		return (
-			<>
-				<Flex overflow="auto" h="full" direction="column">
-					<Flex as={RouterLink} to="/messages" alignItems="center" p="2" gap="4" tabIndex={0} cursor="pointer">
-						<Center w="10" h="10">
-							<DirectMessagesIcon boxSize={6} />
-						</Center>
-						<Text fontWeight="bold">Direct Messages</Text>
-					</Flex>
+	const submit = handleSubmit((values) => {
+		navigate('/search?q=' + values.query);
+	});
+
+	return (
+		<>
+			<Flex
+				overflow="auto"
+				h="full"
+				w="full"
+				alignItems="center"
+				justifyContent={{ base: 'flex-start', md: 'center' }}
+				gap="2"
+				direction="column"
+			>
+				<Flex as="form" gap="2" w="full" p="4" maxW="xl" onSubmit={submit}>
+					<Input
+						type="search"
+						placeholder="Search your network..."
+						p="4"
+						{...register('query', { required: true })}
+						isRequired
+					/>
+					<IconButton type="submit" icon={<ChevronRightIcon boxSize={6} />} aria-label="Search" colorScheme="brand" />
 				</Flex>
-				<BottomNav />
-			</>
-		);
-	}
-
-	return null;
+			</Flex>
+			<MobileBottomNav />
+		</>
+	);
 }
