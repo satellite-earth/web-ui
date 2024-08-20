@@ -5,11 +5,11 @@ import { Account } from './account';
 export default class NsecAccount extends Account {
 	readonly type = 'nsec';
 
-	protected declare _signer: SimpleSigner ;
-	public get signer(): SimpleSigner  {
+	protected declare _signer: SimpleSigner;
+	public get signer(): SimpleSigner {
 		return this._signer;
 	}
-	public set signer(value: SimpleSigner ) {
+	public set signer(value: SimpleSigner) {
 		this._signer = value;
 	}
 

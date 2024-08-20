@@ -1,3 +1,3 @@
-import { App } from "@capacitor/app";
+import { App } from '@capacitor/app';
 
-App.addListener("backButton", () => history.go(-1));
+App.addListener('backButton', () => history.go(-1));
