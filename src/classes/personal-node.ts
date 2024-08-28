@@ -30,7 +30,7 @@ export default class PersonalNode extends Relay {
 	sentAuthId = '';
 	authPromise: Deferred<string> | null = null;
 
-	onChallenge = new Subject<string>();
+	onChallenge = new Subject<string | undefined>();
 
 	authenticate(auth: string | ((evt: EventTemplate) => Promise<VerifiedEvent>)) {
 		if (!this.connected) throw new Error('Not connected');
@@ -89,6 +89,8 @@ export default class PersonalNode extends Relay {
 		this.authenticated.next(false);
 		// @ts-expect-error
 		this.connectionPromise = undefined;
+		// remove the old challenge
+		this.onChallenge.next(undefined);
 	};
 
 	close(): void {
