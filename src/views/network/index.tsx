@@ -73,7 +73,7 @@ export default function NetworkView() {
 						}}
 					/> */}
 					<Switch
-						checked={scrapper?.running ?? false}
+						isChecked={scrapper?.running ?? false}
 						onChange={() => controlApi?.send(['CONTROL', 'SCRAPPER', scrapper?.running ? 'STOP' : 'START'])}
 						isDisabled={!scrapper}
 					>

@@ -63,7 +63,7 @@ export default function ServiceLogsView() {
 					Clear
 				</Button>
 				<Spacer />
-				<Switch checked={raw.isOpen} onChange={raw.onToggle}>
+				<Switch isChecked={raw.isOpen} onChange={raw.onToggle}>
 					Show Raw
 				</Switch>
 			</Flex>
