@@ -28,7 +28,7 @@ import NostrConnectView from './views/login/nostr-connect';
 import UserProfileView from './views/profile';
 import SearchView from './views/search';
 import DisplaySettingsView from './views/settings/tabs/display-settings';
-import NodeInfoSettingsView from './views/settings/tabs/node-info';
+import NodeSettingsView from './views/settings/tabs/node-settings';
 import NotificationSettingsView from './views/settings/tabs/notifications';
 import UserArticlesView from './views/profile/articles';
 import UserSummaryView from './views/profile/summary';
@@ -127,7 +127,7 @@ const router = createBrowserRouter([
 					{ path: '', element: <DisplaySettingsView /> },
 					{ path: 'display', element: <DisplaySettingsView /> },
 					{ path: 'notifications', element: <NotificationSettingsView /> },
-					{ path: 'node-info', element: <NodeInfoSettingsView /> },
+					{ path: 'node-info', element: <NodeSettingsView /> },
 					{ path: 'logs', element: <ServiceLogsView /> },
 				],
 			},
