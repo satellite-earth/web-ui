@@ -1,25 +1,14 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-	Button,
-	Checkbox,
-	Flex,
-	FormControl,
-	FormHelperText,
-	FormLabel,
-	Heading,
-	Input,
-	Switch,
-	Textarea,
-} from '@chakra-ui/react';
+import { Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Input, Textarea } from '@chakra-ui/react';
 
 import personalNode, { controlApi, resetPrivateNodeURL } from '../../../services/personal-node';
 import SimpleView from '../../../components/layout/presets/simple-view';
 import useSubject from '../../../hooks/use-subject';
 
-function NodeSettingsPage() {
+function NodeGeneralSettingsPage() {
 	const config = useSubject(controlApi?.config);
-	const { register, handleSubmit, formState, reset, getValues, setValue } = useForm({
+	const { register, handleSubmit, formState, reset } = useForm({
 		defaultValues: config || {},
 		mode: 'all',
 	});
@@ -71,16 +60,6 @@ function NodeSettingsPage() {
 					<FormHelperText>A short description about your node</FormHelperText>
 				</FormControl>
 
-				<FormControl>
-					<FormLabel>Enable HyperDHT</FormLabel>
-					<Switch
-						isChecked={getValues('hyperEnabled')}
-						onChange={(e) => setValue('hyperEnabled', e.currentTarget.checked, { shouldDirty: true })}
-					>
-						Enabled
-					</Switch>
-				</FormControl>
-
 				<Button
 					isDisabled={!formState.isDirty}
 					isLoading={formState.isLoading}
@@ -95,6 +74,6 @@ function NodeSettingsPage() {
 	);
 }
 
-export default function NodeSettingsView() {
-	return <>{personalNode ? <NodeSettingsPage /> : <Heading>Missing personal node connection</Heading>}</>;
+export default function NodeGeneralSettingsView() {
+	return <>{personalNode ? <NodeGeneralSettingsPage /> : <Heading>Missing personal node connection</Heading>}</>;
 }

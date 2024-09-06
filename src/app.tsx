@@ -28,11 +28,12 @@ import NostrConnectView from './views/login/nostr-connect';
 import UserProfileView from './views/profile';
 import SearchView from './views/search';
 import DisplaySettingsView from './views/settings/tabs/display-settings';
-import NodeSettingsView from './views/settings/tabs/node-settings';
+import NodeGeneralSettingsView from './views/settings/tabs/node-settings';
 import NotificationSettingsView from './views/settings/tabs/notifications';
 import UserArticlesView from './views/profile/articles';
 import UserSummaryView from './views/profile/summary';
 import ServiceLogsView from './views/settings/tabs/service-logs';
+import NodeNetworkSettingsView from './views/settings/tabs/network';
 
 const router = createBrowserRouter([
 	{
@@ -127,7 +128,22 @@ const router = createBrowserRouter([
 					{ path: '', element: <DisplaySettingsView /> },
 					{ path: 'display', element: <DisplaySettingsView /> },
 					{ path: 'notifications', element: <NotificationSettingsView /> },
-					{ path: 'node-info', element: <NodeSettingsView /> },
+					{
+						path: 'node-settings',
+						element: (
+							<RequirePersonalNodeAuth>
+								<NodeGeneralSettingsView />
+							</RequirePersonalNodeAuth>
+						),
+					},
+					{
+						path: 'node-network',
+						element: (
+							<RequirePersonalNodeAuth>
+								<NodeNetworkSettingsView />
+							</RequirePersonalNodeAuth>
+						),
+					},
 					{ path: 'logs', element: <ServiceLogsView /> },
 				],
 			},
