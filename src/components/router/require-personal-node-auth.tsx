@@ -46,7 +46,7 @@ export default function RequirePersonalNodeAuth({ children }: PropsWithChildren)
 					to="/connect/auth"
 					state={{ back: (location.state?.back ?? location) satisfies To }}
 				>
-					Use Auth Code
+					Cancel
 				</Button>
 			</Flex>
 		);
