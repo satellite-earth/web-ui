@@ -20,6 +20,7 @@ import DirectMessageConversationView from './views/messages/conversation';
 import RequirePersonalNode from './components/router/require-personal-node';
 import RequireCurrentAccount from './components/router/require-current-account';
 import RequirePersonalNodeAuth from './components/router/require-personal-node-auth';
+import RequireDesktopSetup from './components/router/require-desktop-setup';
 import HomeView from './views/home';
 import SettingsView from './views/settings';
 import PersonalNodeSetupView from './views/setup';
@@ -160,7 +161,9 @@ const App = () => (
 		<ChakraProvider theme={theme}>
 			<GlobalProviders>
 				<Suspense fallback={<h1>Loading...</h1>}>
-					<RouterProvider router={router} />
+					<RequireDesktopSetup>
+						<RouterProvider router={router} />
+					</RequireDesktopSetup>
 				</Suspense>
 			</GlobalProviders>
 		</ChakraProvider>
