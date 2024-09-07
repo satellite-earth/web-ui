@@ -66,7 +66,7 @@ export default function RequireDesktopSetup({ children }: PropsWithChildren) {
 	const isDesktop = window.satellite != null;
 	const config = useSubject(controlApi?.config);
 
-	if (/*isDesktop && !config?.owner*/ true) {
+	if (isDesktop && !config?.owner) {
 		return <DesktopSetup />;
 	}
 
