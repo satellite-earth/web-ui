@@ -34,7 +34,7 @@ import NotificationSettingsView from './views/settings/tabs/notifications';
 import UserArticlesView from './views/profile/articles';
 import UserSummaryView from './views/profile/summary';
 import ServiceLogsView from './views/settings/tabs/service-logs';
-import NodeNetworkSettingsView from './views/settings/tabs/network';
+import NodeNetworkSettingsView from './views/settings/tabs/node-network';
 
 const router = createBrowserRouter([
 	{

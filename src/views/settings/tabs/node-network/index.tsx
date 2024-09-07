@@ -1,7 +1,9 @@
 import { Box, Divider, Flex } from '@chakra-ui/react';
+
 import SimpleView from '../../../../components/layout/presets/simple-view';
 import HyperNetworkStatus from './hyper';
 import TorNetworkStatus from './tor';
+import I2PNetworkStatus from './i2p';
 
 export default function NodeNetworkSettingsView() {
 	return (
@@ -15,6 +17,7 @@ export default function NodeNetworkSettingsView() {
 				<Box px="4">
 					<Divider />
 				</Box>
+				<I2PNetworkStatus />
 			</Flex>
 		</SimpleView>
 	);
