@@ -47,6 +47,19 @@ export default function TorOutboundStatus() {
 				</Switch>
 				<FormHelperText>Allows the node to connect to .onion domains</FormHelperText>
 			</FormControl>
+			{status?.tor.outbound.available && (
+				<FormControl>
+					<Switch
+						isChecked={config?.routeAllTrafficThroughTor}
+						onChange={(e) =>
+							controlApi?.send(['CONTROL', 'CONFIG', 'SET', 'routeAllTrafficThroughTor', e.currentTarget.checked])
+						}
+					>
+						Route all traffic through tor proxy
+					</Switch>
+					<FormHelperText>Routes all WebSocket and HTTP traffic through tor proxy</FormHelperText>
+				</FormControl>
+			)}
 			{content}
 		</>
 	);
