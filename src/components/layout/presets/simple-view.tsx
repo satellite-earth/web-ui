@@ -7,7 +7,7 @@ export default function SimpleView({ children, title, as }: FlexProps) {
 		<Flex as={as} flex={1} direction="column" overflow="hidden">
 			<SimpleHeader title={title} />
 
-			<Flex direction="column" overflowY="auto" p="4" gap="2">
+			<Flex direction="column" overflowY="auto" p="4" gap="2" flexGrow={1}>
 				{children}
 			</Flex>
 		</Flex>

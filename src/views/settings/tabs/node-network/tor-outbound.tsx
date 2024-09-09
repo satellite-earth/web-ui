@@ -57,7 +57,9 @@ export default function TorOutboundStatus() {
 					>
 						Route all traffic through tor proxy
 					</Switch>
-					<FormHelperText>Routes all WebSocket and HTTP traffic through tor proxy</FormHelperText>
+					<FormHelperText>
+						Routes all WebSocket and HTTP traffic through tor proxy. (This only applies to connections made by the node)
+					</FormHelperText>
 				</FormControl>
 			)}
 			{content}
