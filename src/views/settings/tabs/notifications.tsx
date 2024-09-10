@@ -31,10 +31,14 @@ import useCurrentAccount from '../../../hooks/use-current-account';
 
 function EmailForm() {
 	const config = useSubject(controlApi?.config);
-	const { register, handleSubmit } = useForm({
+	const { register, handleSubmit, reset } = useForm({
 		defaultValues: { email: config?.notificationEmail ?? '' },
 		mode: 'all',
 	});
+
+	useEffect(() => {
+		if (config) reset({ email: config.notificationEmail });
+	}, [config]);
 
 	const submit = handleSubmit((values) => {
 		controlApi?.send(['CONTROL', 'CONFIG', 'SET', 'notificationEmail', values.email]);
