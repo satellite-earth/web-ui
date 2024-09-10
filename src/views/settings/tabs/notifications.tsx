@@ -1,7 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Code, Flex, Link, Spinner, Text, useToast } from '@chakra-ui/react';
+import {
+	Button,
+	Code,
+	Divider,
+	Flex,
+	FormControl,
+	FormHelperText,
+	FormLabel,
+	Heading,
+	Input,
+	Link,
+	Spinner,
+	Text,
+	useToast,
+} from '@chakra-ui/react';
 import { useLocalStorage } from 'react-use';
 import { nanoid } from 'nanoid';
+import { useForm } from 'react-hook-form';
+import { kinds, NostrEvent } from 'nostr-tools';
 
 import Panel from '../../../components/dashboard/panel';
 import PanelItemString from '../../../components/dashboard/panel-item-string';
@@ -11,8 +27,35 @@ import personalNode, { controlApi } from '../../../services/personal-node';
 import { serviceWorkerRegistration } from '../../../services/worker';
 import { disableNotifications, enableNotifications, pushSubscription } from '../../../services/web-push-notifications';
 import { CAP_IS_NATIVE } from '../../../env';
-import { kinds, NostrEvent } from 'nostr-tools';
 import useCurrentAccount from '../../../hooks/use-current-account';
+
+function EmailForm() {
+	const config = useSubject(controlApi?.config);
+	const { register, handleSubmit } = useForm({
+		defaultValues: { email: config?.notificationEmail ?? '' },
+		mode: 'all',
+	});
+
+	const submit = handleSubmit((values) => {
+		controlApi?.send(['CONTROL', 'CONFIG', 'SET', 'notificationEmail', values.email]);
+	});
+
+	return (
+		<Flex direction="column" as="form" onSubmit={submit}>
+			<Heading size="sm">Email Notifications</Heading>
+			<FormControl>
+				<FormLabel>Email address</FormLabel>
+				<Flex gap="2">
+					<Input type="email" {...register('email')} />
+					<Button colorScheme="green" type="submit">
+						Save
+					</Button>
+				</Flex>
+				<FormHelperText>Email is sent to the ntfy.sh server for forwarding notifications</FormHelperText>
+			</FormControl>
+		</Flex>
+	);
+}
 
 function NtfySettings() {
 	const account = useCurrentAccount();
@@ -82,6 +125,10 @@ function NtfySettings() {
 					Test
 				</Button>
 			</Flex>
+
+			<Divider my="2" />
+
+			<EmailForm />
 		</>
 	);
 }
