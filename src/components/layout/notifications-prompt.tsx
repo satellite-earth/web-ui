@@ -4,7 +4,7 @@ import { useLocalStorage } from 'react-use';
 
 import useSubject from '../../hooks/use-subject';
 import { serviceWorkerRegistration } from '../../services/worker';
-import { enableNotifications, pushSubscription } from '../../services/notifications';
+import { enableNotifications, pushSubscription } from '../../services/web-push-notifications';
 import { controlApi } from '../../services/personal-node';
 import { IS_SATELLITE_DESKTOP } from '../../env';
 

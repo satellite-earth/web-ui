@@ -23,44 +23,31 @@ if (import.meta.env.DEV) allowlist = [/^\/$/];
 registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html'), { allowlist }));
 
 // notifications
-import { type DirectMessageNotification } from '@satellite-earth/core/types/control-api/notifications.js';
-import { getDMSender } from '@satellite-earth/core/helpers/nostr/dms.js';
-import { getUserDisplayName } from '@satellite-earth/core/helpers/nostr/profile.js';
+import { type WebPushNotification } from '@satellite-earth/core/types/control-api/notifications.js';
 
 self.addEventListener('push', (event) => {
-	const data = event.data?.json() as DirectMessageNotification | undefined;
+	const data = event.data?.json() as WebPushNotification | undefined;
+
+	if (!data) return;
 
 	try {
-		if (data?.sender) {
-			const content = JSON.parse(data.sender.content);
-			const name = getUserDisplayName(content, data.event.pubkey);
-			const message = `New direct message from ${name}`;
-
-			event.waitUntil(self.registration.showNotification(name, { body: message, data: getDMSender(data.event) }));
-		} else if (data?.event) {
-			const message = `New direct message`;
-
-			event.waitUntil(
-				self.registration.showNotification('Direct Message', { body: message, data: getDMSender(data.event) }),
-			);
-		}
+		event.waitUntil(self.registration.showNotification(data.title, { body: data.body, data, icon: data.icon }));
 	} catch (error) {}
 });
 
 self.addEventListener('notificationclick', (event) => {
 	event.notification.close();
 
-	const pubkey: string = event.notification.data;
-	const url = `/messages/p/` + pubkey;
+	const data: WebPushNotification = event.notification.data;
 
 	event.waitUntil(
 		self.clients.matchAll({ type: 'window' }).then((clientList) => {
 			const firstClient = clientList[0];
 			if (firstClient) {
 				firstClient.focus();
-				firstClient.navigate(url);
+				firstClient.navigate(data.url);
 			} else {
-				self.clients.openWindow(url).then((window) => window?.focus());
+				self.clients.openWindow(data.url).then((window) => window?.focus());
 			}
 		}),
 	);

@@ -3,6 +3,7 @@ import { type WebSubscription } from '@satellite-earth/core/types/control-api/no
 import { controlApi } from './personal-node';
 import { serviceWorkerRegistration } from './worker';
 import Subject from '../classes/subject';
+import { nanoid } from 'nanoid';
 
 export const pushSubscription = new Subject<PushSubscription | null>();
 serviceWorkerRegistration.subscribe(async (registration) => {
@@ -26,6 +27,7 @@ export async function enableNotifications() {
 		// @ts-expect-error
 		const isMobile: boolean = navigator.userAgentData?.mobile ?? navigator.userAgent.includes('Android');
 		const metadata: WebSubscription = {
+			id: `web:${nanoid()}`,
 			type: 'web',
 			deviceType: isMobile ? 'mobile' : 'desktop',
 			endpoint: endpoint!,
