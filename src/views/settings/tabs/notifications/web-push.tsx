@@ -60,7 +60,7 @@ function WebPushNotificationStatus() {
 
 	return (
 		<Alert status="info" whiteSpace="pre-wrap">
-			Enable HyperDHT in order to connect to <Code>.hyper</Code> relays
+			Enable Web Push notifications
 			<Button
 				variant="ghost"
 				isLoading={loading}
