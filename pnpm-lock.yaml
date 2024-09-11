@@ -26,6 +26,9 @@ importers:
       '@capacitor/ios':
         specifier: ^6.1.1
         version: 6.1.1(@capacitor/core@6.1.1)
+      '@capacitor/preferences':
+        specifier: ^6.0.2
+        version: 6.0.2(@capacitor/core@6.1.1)
       '@chakra-ui/breakpoint-utils':
         specifier: ^2.0.8
         version: 2.0.8
@@ -863,6 +866,11 @@ packages:
     resolution: {integrity: sha512-he6+Fhj6x1dSnOzM98xaPvioOU8MNO+qpodCJwnHE3mIRonTpFutXJK8DP8fnNhjDPk2km9VafLSfOeiZXNv3Q==}
     peerDependencies:
       '@capacitor/core': ^6.1.0
+
+  '@capacitor/preferences@6.0.2':
+    resolution: {integrity: sha512-ccD4/9ybnipJncLeCWlRPNQS2jv3nn8ivVLKzdVIWkiUHLo/hvuSSP7awVzvBwDNtAhNxIipjjWH6TyzZgLCcg==}
+    peerDependencies:
+      '@capacitor/core': ^6.0.0
 
   '@chakra-ui/accordion@2.3.1':
     resolution: {integrity: sha512-FSXRm8iClFyU+gVaXisOSEw0/4Q+qZbFRiuhIAkVU6Boj0FxAMrlo9a8AV5TuF77rgaHytCdHk0Ng+cyUijrag==}
@@ -5629,6 +5637,10 @@ snapshots:
       '@capacitor/core': 3.9.0
 
   '@capacitor/ios@6.1.1(@capacitor/core@6.1.1)':
+    dependencies:
+      '@capacitor/core': 6.1.1
+
+  '@capacitor/preferences@6.0.2(@capacitor/core@6.1.1)':
     dependencies:
       '@capacitor/core': 6.1.1
 

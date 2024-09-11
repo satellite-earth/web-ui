@@ -103,7 +103,7 @@ export default function ServiceLogsView() {
 								</p>
 							))}
 				</Box>
-				<ServicesTree select={setService} selected={service} w="sm" hideBelow="2xl" />
+				<ServicesTree select={setService} selected={service} w="sm" hideBelow="2xl" flexShrink={0} />
 			</Flex>
 
 			<Drawer isOpen={drawer.isOpen} placement="right" onClose={drawer.onClose} size="md">
