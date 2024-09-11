@@ -1,18 +1,44 @@
 import { useEffect, useState } from 'react';
-import { Button, Code, Flex, Heading, Link, Spinner, Text } from '@chakra-ui/react';
-import { useLocalStorage } from 'react-use';
+import { Alert, Button, Code, Flex, Heading, Link, Spinner, Text } from '@chakra-ui/react';
 import { nanoid } from 'nanoid';
 import { kinds, NostrEvent } from 'nostr-tools';
 
 import personalNode, { controlApi } from '../../../../services/personal-node';
 import useCurrentAccount from '../../../../hooks/use-current-account';
+import useSubject from '../../../../hooks/use-subject';
+import { deviceId, ntfyServer, ntfyTopic } from '../../../../services/preferences';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import useNotificationChannelsReport from '../../../../hooks/reports/use-notification-channels';
+import { CopyIconButton } from '../../../../components/copy-icon-button';
 
 export default function NtfyNotificationSettings() {
 	const account = useCurrentAccount();
-	const [topic, setTopic] = useLocalStorage<string>('ntfy-topic', '', { raw: true });
-	useEffect(() => {
-		if (!topic) setTopic(nanoid());
-	}, [topic]);
+
+	const device = useSubject(deviceId);
+	const topic = useSubject(ntfyTopic);
+	const server = useSubject(ntfyServer);
+	const { channels } = useNotificationChannelsReport();
+
+	const channel = Object.values(channels || {}).find((c) => c.device === device && c.type === 'ntfy');
+
+	const enable = () => {
+		const topic = nanoid();
+		// generate a new random id
+		ntfyTopic.next(topic);
+
+		controlApi?.send([
+			'CONTROL',
+			'NOTIFICATIONS',
+			'REGISTER',
+			{ id: `ntfy:${topic}`, server, topic, type: 'ntfy', device },
+		]);
+	};
+
+	const disable = () => {
+		if (!channel) return;
+
+		controlApi?.send(['CONTROL', 'NOTIFICATIONS', 'UNREGISTER', channel.id]);
+	};
 
 	const [testing, setTesting] = useState(false);
 	const test = async () => {
@@ -58,36 +84,40 @@ export default function NtfyNotificationSettings() {
 				</Link>
 			</Text>
 
-			<Code p="2" userSelect="all">
-				{topic}
-			</Code>
-			<Flex gap="2" mt="2">
-				<Button
-					onClick={() =>
-						controlApi?.send([
-							'CONTROL',
-							'NOTIFICATIONS',
-							'REGISTER',
-							{ id: `ntfy:${topic}`, server: 'https://ntfy.sh', topic, type: 'ntfy', deviceType: 'mobile' },
-						])
-					}
-					colorScheme="blue"
-				>
-					Enable
-				</Button>
-				<Button
-					onClick={() => controlApi?.send(['CONTROL', 'NOTIFICATIONS', 'UNREGISTER', `ntfy:${topic}`])}
-					colorScheme="orange"
-				>
-					Disable
-				</Button>
-				<Button as={Link} href={`ntfy://ntfy.sh/${topic}`} colorScheme="green" isExternal>
-					Setup Ntfy
-				</Button>
-				<Button ml="auto" onClick={test} isLoading={testing}>
-					Test
-				</Button>
-			</Flex>
+			{channel ? (
+				<>
+					<Flex gap="2">
+						<Code p="2" userSelect="all" w="full" rounded="md">
+							{topic}
+						</Code>
+						<CopyIconButton value={topic} aria-label="Copy topic" />
+					</Flex>
+					<Flex gap="2" mt="2">
+						<Button onClick={disable} colorScheme="orange">
+							Disable
+						</Button>
+						<Button ml="auto" onClick={test} isLoading={testing}>
+							Test
+						</Button>
+						<Button
+							as={Link}
+							href={`ntfy://${new URL(server).host}/${topic}`}
+							colorScheme="green"
+							isExternal
+							rightIcon={<ExternalLinkIcon />}
+						>
+							Setup Ntfy
+						</Button>
+					</Flex>
+				</>
+			) : (
+				<Alert status="info" whiteSpace="pre-wrap">
+					Enable Ntfy notifications
+					<Button variant="ghost" onClick={enable} ml="auto">
+						Enable
+					</Button>
+				</Alert>
+			)}
 		</>
 	);
 }

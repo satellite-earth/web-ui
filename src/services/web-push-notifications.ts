@@ -1,9 +1,10 @@
-import { type WebSubscription } from '@satellite-earth/core/types/control-api/notifications.js';
+import { type WebPushChannel } from '@satellite-earth/core/types/control-api/notifications.js';
+import { nanoid } from 'nanoid';
 
 import { controlApi } from './personal-node';
 import { serviceWorkerRegistration } from './worker';
 import Subject from '../classes/subject';
-import { nanoid } from 'nanoid';
+import { deviceId } from './preferences';
 
 export const pushSubscription = new Subject<PushSubscription | null>();
 serviceWorkerRegistration.subscribe(async (registration) => {
@@ -26,13 +27,13 @@ export async function enableNotifications() {
 
 		// @ts-expect-error
 		const isMobile: boolean = navigator.userAgentData?.mobile ?? navigator.userAgent.includes('Android');
-		const metadata: WebSubscription = {
+		const metadata: WebPushChannel = {
 			id: `web:${nanoid()}`,
 			type: 'web',
-			deviceType: isMobile ? 'mobile' : 'desktop',
+			device: deviceId.value,
 			endpoint: endpoint!,
 			expirationTime: subscription.expirationTime,
-			keys: json.keys as WebSubscription['keys'],
+			keys: json.keys as WebPushChannel['keys'],
 		};
 
 		controlApi.send(['CONTROL', 'NOTIFICATIONS', 'REGISTER', metadata]);

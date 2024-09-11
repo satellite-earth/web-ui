@@ -1,7 +1,8 @@
 import { Preferences } from '@capacitor/preferences';
 import _throttle from 'lodash.throttle';
-import { PersistentSubject } from '../classes/subject';
 import { nanoid } from 'nanoid';
+
+import { PersistentSubject } from '../classes/subject';
 
 class Preference<T> extends PersistentSubject<T> {
 	key: string;
@@ -42,5 +43,12 @@ class Preference<T> extends PersistentSubject<T> {
 }
 
 // local application preferences
-export const ntfyTopic = new Preference('ntfy-topic', '');
+export const deviceId = new Preference('device-id', nanoid(), true);
+
+export const ntfyTopic = new Preference('ntfy-topic', nanoid(), true);
 export const ntfyServer = new Preference('ntfy-server', 'https://ntfy.sh', true);
+
+if (import.meta.env.DEV) {
+	// @ts-expect-error
+	window.preferences = Preferences;
+}
