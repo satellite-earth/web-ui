@@ -25,6 +25,7 @@ import { BackButton } from '../../../components/back-button';
 import { groupMessages } from '../../../helpers/nostr/thread';
 import useUserMetadata from '../../../hooks/use-user-metadata';
 import HoverLinkOverlay from '../../../components/hover-link-overlay';
+import useHideMobileNav from '../../../hooks/use-hide-mobile-nav';
 
 /** This is broken out from DirectMessageChatPage for performance reasons. Don't use outside of file */
 const ChatLog = memo(({ timeline }: { timeline: TimelineLoader }) => {
@@ -48,6 +49,7 @@ function DirectMessageConversationPage({ pubkey }: { pubkey: string }) {
 	const account = useCurrentAccount()!;
 	const navigate = useNavigate();
 	const location = useLocation();
+	useHideMobileNav();
 
 	// refresh user metadata
 	useUserMetadata(pubkey, undefined, { alwaysRequest: true });
@@ -108,10 +110,11 @@ function DirectMessageConversationPage({ pubkey }: { pubkey: string }) {
 	const callback = useTimelineCurserIntersectionCallback(timeline);
 
 	return (
-		<Flex direction="column" w="full" h="100vh">
+		<>
 			<ThreadsProvider timeline={timeline}>
 				<IntersectionObserverProvider callback={callback}>
-					<Flex flexShrink={0} p="2" borderBottomWidth={1}>
+					{/* header */}
+					<Flex flexShrink={0} p="2" borderBottomWidth={1} mt="var(--safe-top)">
 						<BackButton mr="2" />
 						<Flex gap="2" alignItems="center" py="2" pl="2" pr="4" m="-2" as={LinkBox}>
 							<UserAvatar pubkey={pubkey} size="sm" />
@@ -129,17 +132,23 @@ function DirectMessageConversationPage({ pubkey }: { pubkey: string }) {
 							/>
 						</ButtonGroup>
 					</Flex>
+
+					{/* messages view */}
 					<Flex h="0" flex={1} overflowX="hidden" overflowY="scroll" direction="column-reverse" gap="2" py="4" px="2">
 						<ChatLog timeline={timeline} />
 						<TimelineActionAndStatus timeline={timeline} />
 					</Flex>
-					<SendMessageForm flexShrink={0} pubkey={pubkey} />
+
+					{/* text box */}
+					<SendMessageForm flexShrink={0} pubkey={pubkey} mb="var(--safe-bottom)" />
+
+					{/* side drawer */}
 					{location.state?.thread && (
 						<ThreadDrawer isOpen onClose={closeDrawer} threadId={location.state.thread} pubkey={pubkey} />
 					)}
 				</IntersectionObserverProvider>
 			</ThreadsProvider>
-		</Flex>
+		</>
 	);
 }
 

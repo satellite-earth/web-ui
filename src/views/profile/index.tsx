@@ -27,86 +27,81 @@ function UserProfilePage({ pubkey }: { pubkey: string }) {
 
 	if (showMenu) {
 		return (
-			<>
-				<Flex overflow="hidden" flex={1} direction={{ base: 'column', lg: 'row' }}>
+			<Flex overflow="hidden" flex={1} direction={{ base: 'column', lg: 'row' }}>
+				<Flex
+					overflowY="auto"
+					overflowX="hidden"
+					h="full"
+					maxW={{ base: 'none', lg: 'md' }}
+					minW={{ base: 'none', lg: 'md' }}
+					direction="column"
+					borderRightWidth={1}
+				>
 					<Flex
-						overflowY="auto"
-						overflowX="hidden"
-						h="full"
-						maxW={{ base: 'none', lg: 'md' }}
-						minW={{ base: 'none', lg: 'md' }}
 						direction="column"
-						borderRightWidth={1}
+						gap="2"
+						p="4"
+						pt="max(1rem, var(--safe-top))"
+						backgroundImage={metadata?.banner && `url(${metadata?.banner})`}
+						backgroundPosition="center"
+						backgroundRepeat="no-repeat"
+						backgroundSize="cover"
+						borderBottomWidth={metadata?.banner ? undefined : 1}
+						position="relative"
 					>
-						<Flex
-							direction="column"
-							gap="2"
-							p="4"
-							backgroundImage={metadata?.banner && `url(${metadata?.banner})`}
-							backgroundPosition="center"
-							backgroundRepeat="no-repeat"
-							backgroundSize="cover"
-							borderBottomWidth={metadata?.banner ? undefined : 1}
-							position="relative"
-						>
-							<UserAvatar pubkey={pubkey} size="xl" float="left" boxShadow="lg" />
-							<IconButton
-								icon={<DirectMessagesIcon boxSize={5} />}
-								as={RouterLink}
-								to={`/profile/${npub}/messages`}
-								aria-label="Direct Message"
-								colorScheme="blue"
-								rounded="full"
-								position="absolute"
-								bottom="-6"
-								right="4"
-								size="lg"
-							/>
-						</Flex>
-						<Box p="4">
-							<Heading size="md">
-								<UserName pubkey={pubkey} isTruncated />
-							</Heading>
-							<UserDnsIdentity pubkey={pubkey} />
-							<Flex gap="2" mt="2">
-								<Box w="5" h="5" backgroundColor={pubkeyColor} rounded="full" />
-								<Text>Public key color</Text>
-								<Code>{pubkeyColor}</Code>
-							</Flex>
-							{metadata?.website && (
-								<Flex gap="2">
-									<ExternalLinkIcon boxSize="1.2em" />
-									<Link href={metadata.website} target="_blank" color="blue.500" isExternal>
-										{metadata.website}
-									</Link>
-								</Flex>
-							)}
-							<UserAbout pubkey={pubkey} mt="2" noOfLines={3} />
-						</Box>
-						<Flex direction="column" p="2" gap="2">
-							<SimpleNavItem to={`/profile/${npub}/summary`}>Summary</SimpleNavItem>
-							<SimpleNavItem to={`/profile/${npub}/notes`}>Notes</SimpleNavItem>
-							<SimpleNavItem to={`/profile/${npub}/articles`}>Articles</SimpleNavItem>
-						</Flex>
+						<UserAvatar pubkey={pubkey} size="xl" float="left" boxShadow="lg" />
+						<IconButton
+							icon={<DirectMessagesIcon boxSize={5} />}
+							as={RouterLink}
+							to={`/profile/${npub}/messages`}
+							aria-label="Direct Message"
+							colorScheme="blue"
+							rounded="full"
+							position="absolute"
+							bottom="-6"
+							right="4"
+							size="lg"
+						/>
 					</Flex>
-					{!isMobile && (
-						<ErrorBoundary>
-							<Outlet />
-						</ErrorBoundary>
-					)}
+					<Box p="4">
+						<Heading size="md">
+							<UserName pubkey={pubkey} isTruncated />
+						</Heading>
+						<UserDnsIdentity pubkey={pubkey} />
+						<Flex gap="2" mt="2">
+							<Box w="5" h="5" backgroundColor={pubkeyColor} rounded="full" />
+							<Text>Public key color</Text>
+							<Code>{pubkeyColor}</Code>
+						</Flex>
+						{metadata?.website && (
+							<Flex gap="2">
+								<ExternalLinkIcon boxSize="1.2em" />
+								<Link href={metadata.website} target="_blank" color="blue.500" isExternal>
+									{metadata.website}
+								</Link>
+							</Flex>
+						)}
+						<UserAbout pubkey={pubkey} mt="2" noOfLines={3} />
+					</Box>
+					<Flex direction="column" p="2" gap="2">
+						<SimpleNavItem to={`/profile/${npub}/summary`}>Summary</SimpleNavItem>
+						<SimpleNavItem to={`/profile/${npub}/notes`}>Notes</SimpleNavItem>
+						<SimpleNavItem to={`/profile/${npub}/articles`}>Articles</SimpleNavItem>
+					</Flex>
 				</Flex>
-				<MobileBottomNav />
-			</>
+				{!isMobile && (
+					<ErrorBoundary>
+						<Outlet />
+					</ErrorBoundary>
+				)}
+			</Flex>
 		);
 	}
 
 	return (
-		<>
-			<ErrorBoundary>
-				<Outlet />
-			</ErrorBoundary>
-			<MobileBottomNav />
-		</>
+		<ErrorBoundary>
+			<Outlet />
+		</ErrorBoundary>
 	);
 }
 

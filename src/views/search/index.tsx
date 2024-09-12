@@ -14,22 +14,22 @@ import {
 } from '@chakra-ui/react';
 import { kinds, NostrEvent } from 'nostr-tools';
 import { SearchIcon } from '@chakra-ui/icons';
-import { Link as RouterLink, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import personalNode from '../../services/personal-node';
 import userMetadataService from '../../services/user-metadata';
 import ProfileCard from './components/profile-card';
 import NoteCard from './components/note-card';
 import { BackButton } from '../../components/back-button';
-import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import useDMSearchReport from '../../hooks/reports/use-dm-search-report';
 import ConversationCard from './components/conversation-card';
 import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
+import { useThrottle } from 'react-use';
 
 export default function SearchView() {
 	const shouldAutoFocusInput = useBreakpointValue({ base: false, lg: true });
 	const [search, setSearch] = useSearchParams();
-	const { register, handleSubmit, formState } = useForm({
+	const { register, handleSubmit, formState, getValues } = useForm({
 		defaultValues: { query: search.get('q') ?? '' },
 		mode: 'all',
 	});
@@ -108,7 +108,17 @@ export default function SearchView() {
 	return (
 		<>
 			<Flex w="full" flex={1} direction="column" overflowY="hidden">
-				<Flex as="form" onSubmit={submit} maxW="4xl" w="full" mx="auto" p="2" gap="1" direction="column">
+				<Flex
+					as="form"
+					onSubmit={submit}
+					maxW="4xl"
+					w="full"
+					mx="auto"
+					p="2"
+					gap="1"
+					direction="column"
+					mt="var(--safe-top)"
+				>
 					<Flex gap="2">
 						<BackButton />
 						<Input
@@ -178,7 +188,6 @@ export default function SearchView() {
 					</Flex>
 				</Flex>
 			</Flex>
-			<MobileBottomNav />
 		</>
 	);
 }

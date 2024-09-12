@@ -9,7 +9,7 @@ export default function SimpleHeader({ children, title, ...props }: FlexProps) {
 			alignItems="center"
 			gap="2"
 			minH="14"
-			mt="env(safe-area-inset-top)"
+			mt="var(--safe-top)"
 		>
 			<BackButton />
 			<Heading fontWeight="bold" size="md" ml={{ base: 0, md: '2' }} whiteSpace="pre" isTruncated>

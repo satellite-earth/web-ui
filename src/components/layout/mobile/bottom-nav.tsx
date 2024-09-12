@@ -12,7 +12,7 @@ export default function MobileBottomNav() {
 			borderTopWidth={1}
 			hideFrom="md"
 			bg="var(--chakra-colors-chakra-body-bg)"
-			mb="env(safe-area-inset-bottom)"
+			mb="var(--safe-bottom)"
 		>
 			<IconButton as={RouterLink} to="/" icon={<Home05 boxSize={5} />} aria-label="Search" flex={1} />
 			<IconButton as={RouterLink} to="/search" icon={<SearchIcon boxSize={5} />} aria-label="Search" flex={1} />

@@ -2,25 +2,17 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 
 import SimpleHeader from './simple-header';
 
-export default function SimpleView({ children, title, as }: FlexProps) {
+export default function SimpleView({ children, title, as, flush }: FlexProps & { flush?: boolean }) {
 	return (
-		<Flex
-			as={as}
-			flex={1}
-			direction="column"
-			overflow="hidden"
-			// handle native notch and navbar
-			pr="env(safe-area-inset-right)"
-			pl="env(safe-area-inset-left)"
-		>
+		<Flex as={as} flex={1} direction="column" overflow="hidden" pr="var(--safe-right)" pl="var(--safe-left)">
 			<SimpleHeader title={title} />
 
 			<Flex
 				direction="column"
 				overflowY="auto"
-				px="4"
-				pt="4"
-				pb="max(1rem, env(safe-area-inset-bottom))"
+				px={flush ? 0 : '4'}
+				pt={flush ? 0 : '4'}
+				pb={flush ? 0 : 'max(1rem, var(--safe-bottom))'}
 				gap="2"
 				flexGrow={1}
 			>
