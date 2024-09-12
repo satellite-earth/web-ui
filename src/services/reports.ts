@@ -38,7 +38,7 @@ const ReportTypes = {
 	SCRAPPER_STATUS: ScrapperStatusReport,
 	RECEIVER_STATUS: ReceiverStatusReport,
 	NETWORK_STATUS: NetworkStatusReport,
-	NOTIFICATION_CHANNELS: NotificationChannelsReport
+	NOTIFICATION_CHANNELS: NotificationChannelsReport,
 } as const;
 
 class ReportManager {
