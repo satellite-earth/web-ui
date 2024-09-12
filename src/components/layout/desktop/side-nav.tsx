@@ -48,8 +48,8 @@ export default function DesktopSideNav() {
 			py="2"
 			shrink={0}
 			borderRightWidth={1}
-			pt="var(--safe-top)"
-			pb="var(--safe-bottom)"
+			pt="calc(var(--chakra-space-2) + var(--safe-top))"
+			pb="calc(var(--chakra-space-2) + var(--safe-bottom))"
 		>
 			{account && <UserAccount />}
 			<IconButton
