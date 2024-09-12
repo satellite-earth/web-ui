@@ -8,6 +8,9 @@ const config: CapacitorConfig = {
 	android: {
 		allowMixedContent: true,
 	},
+	ios: {
+		contentInset: 'always',
+	},
 	server: {
 		cleartext: true,
 	},
