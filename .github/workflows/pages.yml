@@ -47,6 +47,7 @@ jobs:
         id: pnpm-install
         with:
           run_install: false
+          version: '9.6.0'
 
       - name: Build
         run: make build-web
