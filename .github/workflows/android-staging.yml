@@ -43,6 +43,9 @@ jobs:
           run_install: false
           version: '9.6.0'
 
+      - name: Install
+        run: make install
+
       - name: Build app
         run: make build-android
 

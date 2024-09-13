@@ -49,7 +49,10 @@ jobs:
           run_install: false
           version: '9.6.0'
 
-      - name: Build
+      - name: Install
+        run: make install
+
+      - name: Build Web
         run: make build-web
 
       - name: Redirect 404 to Index for SPA
