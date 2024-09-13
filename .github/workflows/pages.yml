@@ -3,6 +3,8 @@ name: GitHub Pages
 on:
   # Runs on pushes targeting the default branch
   push:
+    branches:
+      - master
     tags:
       - v*.*.*
 
@@ -30,13 +32,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
-      - name: Checkout
-        uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -44,29 +48,11 @@ jobs:
         with:
           run_install: false
 
-      - name: Checkout @satellite-earth/core
-        uses: actions/checkout@v4
-        with:
-          repository: satellite-earth/core
-          path: core
-          ref: dev
-
-      - name: Build @satellite-earth/core
-        run: |
-          cd core
-          pnpm install
-          pnpm build
-
-      - name: Install dependencies
-        run: |
-          pnpm add ./core
-          pnpm install
-
       - name: Build
-        run: pnpm build
+        run: make build-web
 
       - name: Redirect 404 to Index for SPA
-        run: cp dist/index.html dist/404.html
+        run: cp public/index.html public/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -74,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './dist'
+          path: './public'
 
       - name: Deploy to GitHub Pages
         id: deployment
