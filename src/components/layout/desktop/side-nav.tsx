@@ -1,33 +1,12 @@
-import {
-	Divider,
-	Flex,
-	IconButton,
-	Menu,
-	MenuButton,
-	MenuDivider,
-	MenuItem,
-	MenuList,
-	useColorMode,
-	useDisclosure,
-} from '@chakra-ui/react';
+import { Flex, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import useSubject from '../../../hooks/use-subject';
 import UserAvatar from '../../user/user-avatar';
 import useCurrentAccount from '../../../hooks/use-current-account';
 import accountService from '../../../services/account';
 import UserName from '../../user/user-name';
 import UserDnsIdentity from '../../user/user-dns-identity';
-import Compass01 from '../../icons/components/compass-01';
-import Moon01 from '../../icons/components/moon-01';
-import Sun from '../../icons/components/sun';
-import ExploreCommunitiesModal from '../../explore/expore-communities-modal';
-import communitiesService from '../../../services/communities';
-import CommunityButton from './community-button';
-import Database01 from '../../icons/components/database-01';
-import { DirectMessagesIcon, SearchIcon, SettingsIcon, SatelliteDishIcon } from '../../icons';
-// import { SearchIcon, SettingsIcon } from '@chakra-ui/icons';
-import useOverviewReport from '../../../hooks/reports/use-overview-report';
+import { DirectMessagesIcon, SettingsIcon, SatelliteDishIcon, SearchIcon } from '../../icons';
 import Home05 from '../../icons/components/home-05';
 
 function UserAccount() {
@@ -60,12 +39,18 @@ function UserAccount() {
 
 export default function DesktopSideNav() {
 	const account = useCurrentAccount();
-	const explore = useDisclosure();
-	const { colorMode, toggleColorMode } = useColorMode();
-	const communities = useSubject(communitiesService.communities);
 
 	return (
-		<Flex direction="column" gap="2" px="2" py="2" shrink={0} borderRightWidth={1}>
+		<Flex
+			direction="column"
+			gap="2"
+			px="2"
+			py="2"
+			shrink={0}
+			borderRightWidth={1}
+			pt="calc(var(--chakra-space-2) + var(--safe-top))"
+			pb="calc(var(--chakra-space-2) + var(--safe-bottom))"
+		>
 			{account && <UserAccount />}
 			<IconButton
 				as={RouterLink}
@@ -80,6 +65,17 @@ export default function DesktopSideNav() {
 			/>
 			<IconButton
 				as={RouterLink}
+				aria-label="Search"
+				title="Search"
+				icon={<SearchIcon boxSize={5} />}
+				w="12"
+				h="12"
+				fontSize="24"
+				variant="outline"
+				to="/search"
+			/>
+			<IconButton
+				as={RouterLink}
 				aria-label="Messages"
 				title="Messages"
 				icon={<DirectMessagesIcon boxSize={5} />}
@@ -89,30 +85,6 @@ export default function DesktopSideNav() {
 				variant="outline"
 				to="/messages"
 			/>
-			{/* <IconButton
-				as={RouterLink}
-				aria-label="Search"
-				title="Search"
-				icon={<SearchIcon boxSize={5} />}
-				w="12"
-				h="12"
-				fontSize="24"
-				variant="outline"
-				to="/search"
-			/> */}
-			{/* <Divider /> */}
-			{/* {communities.map((community) => (
-				<CommunityButton key={community.pubkey} community={community} />
-			))}
-			<IconButton
-				aria-label="Explore"
-				title="Explore"
-				icon={<Compass01 boxSize={7} />}
-				w="12"
-				h="12"
-				fontSize="24"
-				onClick={explore.onOpen}
-			/> */}
 			<IconButton
 				w="12"
 				h="12"

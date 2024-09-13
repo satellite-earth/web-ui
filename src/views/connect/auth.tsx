@@ -20,6 +20,7 @@ import Panel from '../../components/dashboard/panel';
 import useCurrentAccount from '../../hooks/use-current-account';
 import { useSigningContext } from '../../providers/global/signing-provider';
 import useSubject from '../../hooks/use-subject';
+import accountService from '../../services/account';
 
 export function PersonalNodeAuthPage() {
 	const toast = useToast();
@@ -97,9 +98,22 @@ export function PersonalNodeAuthPage() {
 									OR
 									<Divider />
 								</Flex>
-								<Button type="button" onClick={authenticateWithNostr} colorScheme="purple">
-									Login with Nostr
-								</Button>
+								<Flex gap="2">
+									<Button type="button" onClick={authenticateWithNostr} colorScheme="purple" flex={1}>
+										Login with Nostr
+									</Button>
+									{account && (
+										<Button
+											onClick={() => {
+												// logout and navigate to nostr login view
+												accountService.logout();
+												navigate('/login', { state: { back: location } });
+											}}
+										>
+											Change
+										</Button>
+									)}
+								</Flex>
 							</>
 						)}
 					</>

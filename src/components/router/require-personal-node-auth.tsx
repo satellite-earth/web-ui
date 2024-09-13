@@ -17,7 +17,7 @@ export default function RequirePersonalNodeAuth({ children }: PropsWithChildren)
 
 	const loading = useRef(false);
 	useEffect(() => {
-		// wait for the personalNode to be connected
+		// wait for the personalNode to be connected and a challenge
 		if (!personalNode || !connected || authenticated || !challenge) return;
 
 		if (loading.current) return;
@@ -31,6 +31,7 @@ export default function RequirePersonalNodeAuth({ children }: PropsWithChildren)
 			.finally(() => (loading.current = false));
 	}, [connected, authenticated, challenge]);
 
+	// initial auth UI
 	if (!authenticated && isFirstAuthentication && connected)
 		return (
 			<Flex direction="column" gap="2" alignItems="center" justifyContent="center" h="full">
@@ -45,7 +46,7 @@ export default function RequirePersonalNodeAuth({ children }: PropsWithChildren)
 					to="/connect/auth"
 					state={{ back: (location.state?.back ?? location) satisfies To }}
 				>
-					Use Auth Code
+					Cancel
 				</Button>
 			</Flex>
 		);

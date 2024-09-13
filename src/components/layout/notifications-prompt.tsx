@@ -1,42 +1,23 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, CloseButton, useToast } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, CloseButton } from '@chakra-ui/react';
+import { Link as RouterLink, useMatch } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
-import useSubject from '../../hooks/use-subject';
-import { serviceWorkerRegistration } from '../../services/worker';
-import { enableNotifications, pushSubscription } from '../../services/notifications';
-import { controlApi } from '../../services/personal-node';
 import { IS_SATELLITE_DESKTOP } from '../../env';
 
 export default function NotificationsPrompt() {
-	const toast = useToast();
+	const match = useMatch('/settings/*');
 	const [hide, setHide] = useLocalStorage('hide-request-notifications', false);
 
-	const vapidKey = useSubject(controlApi?.vapidKey);
-	const registration = useSubject(serviceWorkerRegistration);
-	const subscription = useSubject(pushSubscription);
-
-	const [loading, setLoading] = useState(false);
-	const enable = async () => {
-		setLoading(true);
-		try {
-			if (Notification.permission !== 'granted') await Notification.requestPermission();
-			if (!subscription) await enableNotifications();
-		} catch (error) {
-			if (error instanceof Error) toast({ status: 'error', description: error.message });
-		}
-		setLoading(false);
-	};
-
-	if (hide || !registration || !!subscription || !vapidKey || IS_SATELLITE_DESKTOP) return;
+	if (match) return null;
+	if (hide || IS_SATELLITE_DESKTOP) return null;
 
 	return (
 		<Alert status="info" flexWrap="wrap" gap="2" overflow="visible">
 			<AlertIcon />
 			<AlertTitle>Enable Notifications</AlertTitle>
 			<AlertDescription>get notifications when you receive a new direct message</AlertDescription>
-			<Button size="sm" isLoading={loading} onClick={enable} ml={{ base: 0, sm: '2' }} colorScheme="green">
-				Enable Notifications
+			<Button as={RouterLink} size="sm" to="/settings/notifications" ml={{ base: 0, sm: '2' }} colorScheme="green">
+				Setup Notifications
 			</Button>
 			<CloseButton
 				alignSelf="flex-start"

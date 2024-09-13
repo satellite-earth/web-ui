@@ -16,7 +16,7 @@ export default function SendMessageForm({
 	...props
 }: { pubkey: string; rootId?: string } & Omit<FlexProps, 'children'>) {
 	const publish = usePublishEvent();
-	const { requestEncrypt } = useSigningContext();
+	const { requestEncrypt, requestSignature } = useSigningContext();
 
 	const [loadingMessage, setLoadingMessage] = useState('');
 	const { getValues, setValue, watch, handleSubmit, formState, reset } = useForm({
@@ -51,7 +51,10 @@ export default function SendMessageForm({
 		}
 
 		setLoadingMessage('Signing...');
-		const pub = await publish(draft, personalNode!);
+		const signed = await requestSignature(draft);
+
+		setLoadingMessage('Publishing...');
+		const pub = await publish(signed, personalNode!);
 
 		if (pub.event) {
 			clearCache();

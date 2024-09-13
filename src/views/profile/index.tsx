@@ -14,6 +14,7 @@ import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import ErrorBoundary from '../../components/error-boundary';
 import SimpleNavItem from '../../components/layout/presets/simple-nav-item';
+import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 
 function UserProfilePage({ pubkey }: { pubkey: string }) {
 	const match = useMatch('/profile/:address');
@@ -40,6 +41,7 @@ function UserProfilePage({ pubkey }: { pubkey: string }) {
 						direction="column"
 						gap="2"
 						p="4"
+						pt="max(1rem, var(--safe-top))"
 						backgroundImage={metadata?.banner && `url(${metadata?.banner})`}
 						backgroundPosition="center"
 						backgroundRepeat="no-repeat"

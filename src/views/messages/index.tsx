@@ -9,12 +9,12 @@ import { getPubkeysFromList } from '@satellite-earth/core/helpers/nostr/lists.js
 import useSubject from '../../hooks/use-subject';
 import ConversationButton from './components/conversation-button';
 import SimpleHeader from '../../components/layout/presets/simple-header';
-import MobileBottomNav from '../../components/layout/mobile/bottom-nav';
 import draftService from '../../services/drafts';
 import useConversationsReport from '../../hooks/reports/use-conversations-report';
 import useUserContactList from '../../hooks/use-user-contact-list';
 import useCurrentAccount from '../../hooks/use-current-account';
 import { useBreakpointValue } from '../../providers/global/breakpoint-provider';
+import ErrorBoundary from '../../components/error-boundary';
 
 function Conversation({ index, style, data }: ListChildComponentProps<ReportResults['CONVERSATIONS'][]>) {
 	const conversation = data[index];
@@ -62,46 +62,52 @@ export default function MessagesView() {
 
 	if (showMenu) {
 		return (
-			<>
-				<Flex w="full" overflow="hidden" h="full">
-					<Flex
-						direction="column"
-						w={{ base: 'full', lg: 'md' }}
-						overflow={{ base: 'hidden', sm: 'auto' }}
-						flexShrink={0}
-					>
-						<SimpleHeader title="Messages" />
-						<ButtonGroup m="2" size="sm" variant="outline">
-							<Button onClick={() => setFilter('contacts')} variant={filter === 'contacts' ? 'solid' : 'outline'}>
-								Contacts
-							</Button>
-							<Button onClick={() => setFilter('other')} variant={filter === 'other' ? 'solid' : 'outline'}>
-								Other
-							</Button>
-						</ButtonGroup>
-						<Flex h="full" flex={1} overflow="hidden">
-							<AutoSizer>
-								{({ width, height }) => (
-									<FixedSizeList
-										height={height}
-										width={width}
-										itemData={filtered ?? []}
-										itemCount={filtered?.length ?? 0}
-										itemKey={(i, data) => data[i].pubkey}
-										itemSize={64}
-									>
-										{Conversation}
-									</FixedSizeList>
-								)}
-							</AutoSizer>
-						</Flex>
+			<Flex w="full" overflow="hidden" h="full">
+				<Flex
+					direction="column"
+					w={{ base: 'full', lg: 'md' }}
+					overflow={{ base: 'hidden', sm: 'auto' }}
+					flexShrink={0}
+					pb={{ base: 0, md: 'var(--safe-bottom)' }}
+				>
+					<SimpleHeader title="Messages" />
+					<ButtonGroup m="2" size="sm" variant="outline">
+						<Button onClick={() => setFilter('contacts')} variant={filter === 'contacts' ? 'solid' : 'outline'}>
+							Contacts
+						</Button>
+						<Button onClick={() => setFilter('other')} variant={filter === 'other' ? 'solid' : 'outline'}>
+							Other
+						</Button>
+					</ButtonGroup>
+					<Flex h="full" flex={1} overflow="hidden">
+						<AutoSizer>
+							{({ width, height }) => (
+								<FixedSizeList
+									height={height}
+									width={width}
+									itemData={filtered ?? []}
+									itemCount={filtered?.length ?? 0}
+									itemKey={(i, data) => data[i].pubkey}
+									itemSize={64}
+								>
+									{Conversation}
+								</FixedSizeList>
+							)}
+						</AutoSizer>
 					</Flex>
-					<Outlet />
 				</Flex>
-				<MobileBottomNav />
-			</>
+				<Flex direction="column" flex={1}>
+					<ErrorBoundary>
+						<Outlet />
+					</ErrorBoundary>
+				</Flex>
+			</Flex>
 		);
 	}
 
-	return <Outlet />;
+	return (
+		<ErrorBoundary>
+			<Outlet />
+		</ErrorBoundary>
+	);
 }

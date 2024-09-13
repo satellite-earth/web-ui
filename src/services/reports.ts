@@ -1,9 +1,9 @@
 import { ControlResponse } from '@satellite-earth/core/types/control-api/index.js';
+import { ReportArguments } from '@satellite-earth/core/types/control-api/reports.js';
 import _throttle from 'lodash.throttle';
 
 import PersonalNodeControlApi from '../classes/control-api';
 import { controlApi } from './personal-node';
-import { ReportArguments } from '@satellite-earth/core/types/control-api/reports.js';
 import Report from '../classes/report';
 import OverviewReport from '../classes/reports/overview';
 import SuperMap from '../classes/super-map';
@@ -14,6 +14,8 @@ import ServicesReport from '../classes/reports/services';
 import { DMSearchReport } from '../classes/reports/dm-search';
 import ScrapperStatusReport from '../classes/reports/scrapper-status';
 import ReceiverStatusReport from '../classes/reports/receiver-status';
+import NetworkStatusReport from '../classes/reports/network-status';
+import NotificationChannelsReport from '../classes/reports/notification-channels';
 
 // register report handler classes here
 export type ReportTypes = {
@@ -24,6 +26,8 @@ export type ReportTypes = {
 	DM_SEARCH: DMSearchReport;
 	SCRAPPER_STATUS: ScrapperStatusReport;
 	RECEIVER_STATUS: ReceiverStatusReport;
+	NETWORK_STATUS: NetworkStatusReport;
+	NOTIFICATION_CHANNELS: NotificationChannelsReport;
 };
 const ReportTypes = {
 	OVERVIEW: OverviewReport,
@@ -33,6 +37,8 @@ const ReportTypes = {
 	DM_SEARCH: DMSearchReport,
 	SCRAPPER_STATUS: ScrapperStatusReport,
 	RECEIVER_STATUS: ReceiverStatusReport,
+	NETWORK_STATUS: NetworkStatusReport,
+	NOTIFICATION_CHANNELS: NotificationChannelsReport,
 } as const;
 
 class ReportManager {

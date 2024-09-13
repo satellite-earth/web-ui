@@ -26,7 +26,8 @@ export default function SettingsView() {
 							</Text>
 							<Divider />
 						</Flex>
-						<SimpleNavItem to="/settings/node-info">Node Info</SimpleNavItem>
+						<SimpleNavItem to="/settings/node-settings">Node</SimpleNavItem>
+						<SimpleNavItem to="/settings/node-network">Network</SimpleNavItem>
 						<SimpleNavItem to="/settings/logs">Service Logs</SimpleNavItem>
 					</Flex>
 				</Flex>

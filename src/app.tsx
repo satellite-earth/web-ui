@@ -20,6 +20,7 @@ import DirectMessageConversationView from './views/messages/conversation';
 import RequirePersonalNode from './components/router/require-personal-node';
 import RequireCurrentAccount from './components/router/require-current-account';
 import RequirePersonalNodeAuth from './components/router/require-personal-node-auth';
+import RequireDesktopSetup from './components/router/require-desktop-setup';
 import HomeView from './views/home';
 import SettingsView from './views/settings';
 import PersonalNodeSetupView from './views/setup';
@@ -28,11 +29,12 @@ import NostrConnectView from './views/login/nostr-connect';
 import UserProfileView from './views/profile';
 import SearchView from './views/search';
 import DisplaySettingsView from './views/settings/tabs/display-settings';
-import NodeInfoSettingsView from './views/settings/tabs/node-info';
+import NodeGeneralSettingsView from './views/settings/tabs/node-settings';
 import NotificationSettingsView from './views/settings/tabs/notifications';
 import UserArticlesView from './views/profile/articles';
 import UserSummaryView from './views/profile/summary';
 import ServiceLogsView from './views/settings/tabs/service-logs';
+import NodeNetworkSettingsView from './views/settings/tabs/node-network';
 
 const router = createBrowserRouter([
 	{
@@ -127,7 +129,22 @@ const router = createBrowserRouter([
 					{ path: '', element: <DisplaySettingsView /> },
 					{ path: 'display', element: <DisplaySettingsView /> },
 					{ path: 'notifications', element: <NotificationSettingsView /> },
-					{ path: 'node-info', element: <NodeInfoSettingsView /> },
+					{
+						path: 'node-settings',
+						element: (
+							<RequirePersonalNodeAuth>
+								<NodeGeneralSettingsView />
+							</RequirePersonalNodeAuth>
+						),
+					},
+					{
+						path: 'node-network',
+						element: (
+							<RequirePersonalNodeAuth>
+								<NodeNetworkSettingsView />
+							</RequirePersonalNodeAuth>
+						),
+					},
 					{ path: 'logs', element: <ServiceLogsView /> },
 				],
 			},
@@ -144,7 +161,9 @@ const App = () => (
 		<ChakraProvider theme={theme}>
 			<GlobalProviders>
 				<Suspense fallback={<h1>Loading...</h1>}>
-					<RouterProvider router={router} />
+					<RequireDesktopSetup>
+						<RouterProvider router={router} />
+					</RequireDesktopSetup>
 				</Suspense>
 			</GlobalProviders>
 		</ChakraProvider>
