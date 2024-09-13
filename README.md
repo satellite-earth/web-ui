@@ -3,8 +3,6 @@
 >
 > BUILD IN PUBLIC
 
-# Satellite UI
+# Satellite UI Build repo
 
-Satellite UI is a PWA app for managing and interacting with [Personal Satellite nodes](https://github.com/satellite-earth/personal-node).
-
-It's bundled by [Satellite Desktop](https://github.com/satellite-earth/desktop) but can also be run standalone in a web browser.
+This repo is used to build and publish versions of [@satellite-earth/web-ui](https://github.com/satellite-earth/packages/tree/master/apps/web-ui)
