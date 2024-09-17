@@ -1,6 +1,9 @@
 update:
 	git pull --recurse-submodules
 
+release:
+	./scripts/release.sh
+
 install:
 	$(MAKE) -C packages install
 
