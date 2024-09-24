@@ -7,20 +7,28 @@ release:
 install:
 	$(MAKE) -C packages install
 
-cap-sync:
-	$(MAKE) -C packages build cap-sync
+build:
+	$(MAKE) -C packages build
+
+cap-sync: build
+	$(MAKE) -C packages cap-sync
+
+clean-android:
+	cd packages/apps/web-ui/android && \
+	./gradlew clean
 
 build-aab:
 	cd packages/apps/web-ui/android && \
-	./gradlew clean bundleRelease --stacktrace
+	./gradlew bundleRelease
 
 build-apk:
 	cd packages/apps/web-ui/android && \
-	./gradlew assembleRelease --stacktrace
+	./gradlew assembleRelease
 
-build-android: cap-sync
+build-android: clean-android cap-sync
 	$(MAKE) build-apk build-aab
-	cp -r packages/apps/web-ui/android/app/build/outputs/bundle/* android
+	mkdir -p android
+	cp -r packages/apps/web-ui/android/app/build/outputs/* android
 
 build-ios: cap-sync
 	echo "no ios build yet"

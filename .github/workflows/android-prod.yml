@@ -1,11 +1,12 @@
-# Copied from https://github.com/MutinyWallet/mutiny-web/blob/master/.github/workflows/android-staging.yml
-name: Release Android Staging
+name: Release Android Prod
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - master
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -73,17 +74,37 @@ jobs:
         env:
           BUILD_TOOLS_VERSION: "33.0.0"
 
-      # APK
-      - name: Upload APK Asset
-        uses: actions/upload-artifact@v3
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # modified to remove the -signed.apk
-          path: ${{steps.sign_apk.outputs.signedReleaseFile}}
-          name: satellite-earth-dev.apk
+          tag_name: ${{ github.ref }}
+          release_name: Android Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      # APK
+      - name: Upload APK Universal Asset
+        id: upload-release-asset-universal-apk
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{steps.sign_apk.outputs.signedReleaseFile}}
+          asset_name: satellite-${{ github.ref_name }}.apk
+          asset_content_type: application/zip
 
       # AAB
       - name: Upload AAB Asset
-        uses: actions/upload-artifact@v3
+        id: upload-release-asset-aab
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: ${{steps.sign_abb.outputs.signedReleaseFile}}
-          name: satellite-earth-dev.aab
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{steps.sign_aab.outputs.signedReleaseFile}}
+          asset_name: satellite-${{ github.ref_name }}.aab
+          asset_content_type: application/zip
