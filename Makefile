@@ -25,7 +25,7 @@ build-apk:
 	cd packages/apps/web-ui/android && \
 	./gradlew assembleRelease
 
-build-android: clean-android cap-sync
+build-android: cap-sync clean-android
 	$(MAKE) build-apk build-aab
 	mkdir -p android
 	cp -r packages/apps/web-ui/android/app/build/outputs/* android
