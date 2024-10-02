@@ -56,6 +56,9 @@ jobs:
       - name: Redirect 404 to Index for SPA
         run: cp public/index.html public/404.html
 
+      - name: Deploy nsite
+        run: npx -y nsite-cli upload public --purge --privatekey ${{ secrets.NSITE_KEY }}
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
